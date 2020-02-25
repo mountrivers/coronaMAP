@@ -80,11 +80,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
-                Message message = new Message(nickName, editTextMessage.getText().toString(), sender.getUid());
-                databaseReference.child("groupchat").push().setValue(message);
-                editTextMessage.setText("");
+                if(!editTextMessage.getText().toString().matches("")) {
+                    Message message = new Message(nickName, editTextMessage.getText().toString(), sender.getUid());
+                    databaseReference.child("groupchat").push().setValue(message);
+                    editTextMessage.setText("");
+                }
             }
         });
     }

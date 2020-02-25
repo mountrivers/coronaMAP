@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ACTIVITY_MAP.GeoActivity"></activity>
         <activity android:name=".ACTIVITY_HELP.ChangeNickNameActivity" />
         <activity android:name=".ACTIVITY_NEWS.NewsActivity" />
 
