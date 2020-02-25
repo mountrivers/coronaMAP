@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ACTIVITY_MAP.NewMapActivity"></activity>
         <activity android:name=".ACTIVITY_HELP.ChangeNickNameActivity" />
         <activity android:name=".ACTIVITY_NEWS.NewsActivity" />
 
@@ -36,6 +37,7 @@
         <activity android:name=".ACTIVITY_HELP.HelpActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ACTIVITY_MAP.MapActivity" />
+        <activity android:name=".ACTIVITY_NEWS.NewsRoomActivity" />
     </application>
 
 </manifest>

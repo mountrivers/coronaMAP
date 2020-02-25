@@ -1,21 +1,20 @@
 package com.sanha.coronamap.ACTIVITY_NEWS;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.ads.AdView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.sanha.coronamap.ADAPTER.ListviewAdapter;
 import com.sanha.coronamap.CLASS.News;
-import com.sanha.coronamap.MODULES.IDManger;
 import com.sanha.coronamap.R;
 
 import org.jsoup.Jsoup;
@@ -25,27 +24,27 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class NewsActivity extends AppCompatActivity {
+public class MainNewsFragment extends Fragment {
 
     private ListView news_viewr;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = database.getReference();
-    private AdView mAdView;
     public ListviewAdapter adapter;
     Elements contents;
     Document doc = null;
     String news;
     String newsUrl;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_news);
-        IDManger.SetBannerAd(this,findViewById(R.id.news_adview));
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //화면 inflate
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.mainnews, container, false);
+        news_viewr = (ListView) rootView.findViewById(R.id.news_view);
+
+
         showNews( );
 
-
+        return rootView;
     }
     private void crawling(){
         new AsyncTask() {//AsyncTask객체 생성
@@ -79,7 +78,7 @@ public class NewsActivity extends AppCompatActivity {
     private void showNews() {
 
         adapter = new ListviewAdapter() ;
-        news_viewr = (ListView) findViewById(R.id.news_view);
+
         news_viewr.setAdapter(adapter);
 
         news_viewr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,3 +96,4 @@ public class NewsActivity extends AppCompatActivity {
         crawling();
     }
 }
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/paperback"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/news_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:stackFromBottom="true"
+        android:visibility="visible">
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#E7F3FF"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edittext_place"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:ems="10"
+            android:hint="지역이름"
+            android:inputType="textPersonName"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/renew_news"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFE4D0"
+            android:text="지정"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

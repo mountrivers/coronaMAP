@@ -76,4 +76,7 @@ public class ListviewAdapter extends BaseAdapter {
     public void noti(){
         notifyDataSetChanged();
     }
+    public void deleteAll(){
+        listViewItemList.clear();
+    }
 }

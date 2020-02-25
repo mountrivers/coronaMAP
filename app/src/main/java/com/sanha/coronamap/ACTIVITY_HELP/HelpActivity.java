@@ -42,14 +42,11 @@ public class HelpActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter
                 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         help_list.setAdapter(adapter);
-        adapter.add("개발자 : 박희상 / 이산하");
-        adapter.add("메일 : show7159@gmail.com / tksgk77@gmail.com");
-        adapter.add("사용 API : 네이버 Maps API / 구글 Firebase");
-        adapter.add("자료 출처 : 질병관리본부");
-        adapter.add("개인정보는 구글 계정 관하여 공개된 거삼ㄴ 받습니다. \n ex) 이메일,구글닉네임 등 ");
-        adapter.add("기본 닉네임은 구글 닉네임입니다. 원하시면 아래 \n 버튼으로 수정 하실 수 있습니다. ");
-        adapter.add("현재 뉴스는 다음에서 크롤링 해오고 있습니다. ");
-        adapter.add(" PS. 아직 부족한 점이 많습니다. \n 개선할점은 메인화면에서 개발자 건의하기로 해주세요.");
+        adapter.add("개발자 : 이산하(tksgk77@gmail.com) \n박희상(show7159@gmail.com)");
+        adapter.add("사용 API : 구글 Firebase / jsoup /\n네이버 API(현재 미사용)");
+        adapter.add("확진자 지도 : 네이버 지식백과 \n확진자 수 : 질병관리본부 홈페이지 \n뉴스 : 다음");
+        adapter.add("기본 닉네임은 구글 닉네임입니다. 아래 버튼으로 수정 하세요");
+        adapter.add(" PS. 아직 부족한 점이 많습니다. \n개선할점은 아래 피드백 버튼으로 건의해주세요.");
 
         intoFeedBackRoom.setOnClickListener(new View.OnClickListener() {
             @Override

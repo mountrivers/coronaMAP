@@ -13,7 +13,9 @@ import com.google.android.gms.ads.AdView;
 import com.sanha.coronamap.ACTIVITY_CHAT.ChatActivity;
 import com.sanha.coronamap.ACTIVITY_HELP.HelpActivity;
 import com.sanha.coronamap.ACTIVITY_MAP.MapActivity;
+import com.sanha.coronamap.ACTIVITY_MAP.NewMapActivity;
 import com.sanha.coronamap.ACTIVITY_NEWS.NewsActivity;
+import com.sanha.coronamap.ACTIVITY_NEWS.NewsRoomActivity;
 import com.sanha.coronamap.MODULES.IDManger;
 
 import org.jsoup.Jsoup;
@@ -104,7 +106,7 @@ public class MainActivity extends FragmentActivity {
         intoMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewMapActivity .class);
                 startActivity(intent);
             }
         });
@@ -126,7 +128,7 @@ public class MainActivity extends FragmentActivity {
         intoNewsRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewsRoomActivity.class);
                 startActivity(intent);
             }
         });
