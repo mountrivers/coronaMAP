@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ACTIVITY_HELP.HelpActivity">
+
+    <ListView
+        android:id="@+id/help_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/help_change_nicname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:text="닉네임 수정" />
+
+    <Button
+        android:id="@+id/main_feedback_button"
+        android:layout_width="match_parent"        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/feedback"
+        android:visibility="visible" />
+    <FrameLayout
+        android:id="@+id/help_adview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        />
+</LinearLayout>

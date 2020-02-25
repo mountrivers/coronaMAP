@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ACTIVITY_CHAT.FeedBackActivity">
+
+    <EditText
+        android:id="@+id/feed_send_text"
+        android:layout_width="match_parent"
+        android:layout_height="123dp"
+        android:layout_weight="7"
+        android:ems="10"
+        android:hint="문의 내용"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/feed_send_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:text="전송" />
+    <FrameLayout
+        android:id="@+id/feedback_adview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@null"
+        />
+</LinearLayout>

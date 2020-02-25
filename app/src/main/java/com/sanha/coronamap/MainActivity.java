@@ -1,0 +1,134 @@
+package com.sanha.coronamap;
+
+import androidx.fragment.app.FragmentActivity;
+
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.gms.ads.AdView;
+import com.sanha.coronamap.ACTIVITY_CHAT.ChatActivity;
+import com.sanha.coronamap.ACTIVITY_HELP.HelpActivity;
+import com.sanha.coronamap.ACTIVITY_MAP.MapActivity;
+import com.sanha.coronamap.ACTIVITY_NEWS.NewsActivity;
+import com.sanha.coronamap.MODULES.IDManger;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+
+public class MainActivity extends FragmentActivity {
+
+    private Button intoMapButton, intoChatRoom, intoHelpRoom, intoNewsRoom;
+    private TextView numOfePeople;
+
+    Elements contents;
+    Document doc = null;
+    String strNumOfPeople;//결과를 저장할 문자열변수
+
+    private AdView mAdView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        /* 광고 세팅 */
+        IDManger.SetBannerAd(this,findViewById(R.id.main_adview));
+
+        /* 버튼 세팅 */
+        setButton();
+
+
+
+
+        showCountList();
+    }
+
+
+    public void onStart() {
+        super.onStart();
+
+
+    }
+
+    private void showCountList() {
+        numOfePeople = (TextView) findViewById(R.id.main_num_of_people);
+
+        new AsyncTask() {//AsyncTask객체 생성
+            @Override
+            protected Object doInBackground(Object[] params) {
+                try {
+                    doc = Jsoup.connect("http://ncov.mohw.go.kr/index_main.jsp").get(); //naver페이지를 불러옴
+                    contents = doc.select("a.num");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int cnt = 0;//숫자를 세기위한 변수
+                strNumOfPeople = "";
+                for(Element element: contents) {
+                    cnt++;
+                    if(cnt ==1){
+                        strNumOfPeople += "\n확진자수 : ";
+                    }
+                    else if (cnt == 2){
+                        strNumOfPeople += "\n퇴원자수 : ";
+                    }
+                    else{
+                        strNumOfPeople += "\n사망자수 : ";
+                    }
+                    strNumOfPeople += element.text() + "\n";
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                numOfePeople.setText(strNumOfPeople);
+            }
+        }.execute();
+    }
+
+    private void setButton(){
+        intoMapButton = (Button) findViewById(R.id.intoMapButton);
+        intoChatRoom = (Button)findViewById(R.id.enter_chat_room);
+        intoHelpRoom = (Button)findViewById(R.id.help);
+        intoNewsRoom = (Button)findViewById(R.id.intonews_button);
+
+        intoMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        intoChatRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                startActivity(intent);
+            }
+        });
+        intoHelpRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(intent);
+            }
+        });
+        intoNewsRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+}
