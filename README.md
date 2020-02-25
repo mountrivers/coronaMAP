@@ -3,7 +3,7 @@
 아래 3단계만 거치시면 바로 사용 가능 합니다. 
 
 
-#1. IDManger 추가하기
+# 1. IDManger 추가하기
 
 MODULES 폴더 안에 IDManger.java 추가
 
@@ -69,7 +69,7 @@ public class IDManger {
 필요 없을시 관련 함수들 전부 삭제
 
 
-#2. 매니페스트 수정
+# 2. 매니페스트 수정
 AndroidManifest.xml <- 
 ```
 <meta-data
@@ -78,7 +78,7 @@ android:value="ca-app-pub-2294544540507821~1853517193" />
    ```         
             삭제 혹은 value 부분을 자신의 앱ID로 변경
 
-#3. FIREBASE JSON 파일 삽입
+# 3. FIREBASE JSON 파일 삽입
 FIREBASE 홈페이지 참고
 
 https://firebase.google.com/docs/android/setup?authuser=0
