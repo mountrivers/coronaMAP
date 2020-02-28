@@ -19,7 +19,11 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2294544540507821~1853517193" />
+            android:value="ca-app-pub-2294544540507821~1853517193"
+            />
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
 
         <activity android:name=".ACTIVITY_LOGIN.LoginActivity">
             <intent-filter>
@@ -34,10 +38,16 @@
         <activity
             android:name=".ACTIVITY_CHAT.ChatActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ACTIVITY_HELP.HelpActivity" />
+        <activity android:name=".ACTIVITY_HELP.HelpActivity">
+            <intent-filter>
+            <data android:scheme="@string/kakao_scheme"
+                android:host="@string/kakaolink_host" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".ACTIVITY_MAP.MapActivity" />
         <activity android:name=".ACTIVITY_NEWS.NewsRoomActivity" />
-    </application>
 
+
+    </application>
 </manifest>

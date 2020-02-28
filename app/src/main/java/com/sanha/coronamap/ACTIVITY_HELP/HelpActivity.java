@@ -11,9 +11,23 @@ import android.widget.ListView;
 
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.kakao.kakaolink.v2.KakaoLinkResponse;
+import com.kakao.kakaolink.v2.KakaoLinkService;
+import com.kakao.message.template.ButtonObject;
+import com.kakao.message.template.ContentObject;
+import com.kakao.message.template.FeedTemplate;
+import com.kakao.message.template.LinkObject;
+import com.kakao.message.template.SocialObject;
+import com.kakao.network.ErrorResult;
+import com.kakao.network.callback.ResponseCallback;
+import com.kakao.util.KakaoParameterException;
+import com.kakao.util.helper.log.Logger;
 import com.sanha.coronamap.ACTIVITY_CHAT.FeedBackActivity;
 import com.sanha.coronamap.MODULES.IDManger;
 import com.sanha.coronamap.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -21,6 +35,7 @@ public class HelpActivity extends AppCompatActivity {
     private AdView mAdView;
     private Button intoFeedBackRoom;
     private Button intoChangeNickRoom;
+    private Button sharekakaoButton;
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1;
     private InterstitialAd mInterstitialAd;
@@ -39,6 +54,7 @@ public class HelpActivity extends AppCompatActivity {
         help_list = (ListView)findViewById(R.id.help_view);
         intoFeedBackRoom = (Button) findViewById(R.id.main_feedback_button);
         intoChangeNickRoom = (Button) findViewById(R.id.help_change_nicname);
+        sharekakaoButton = (Button) findViewById(R.id.help_sharekakao_button);
         final ArrayAdapter<String> adapter
                 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         help_list.setAdapter(adapter);
@@ -64,6 +80,41 @@ public class HelpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        sharekakaoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareKakao();
+            }
+        });
+    }
 
+    public void shareKakao(){
+
+        FeedTemplate params = FeedTemplate
+                .newBuilder(ContentObject.newBuilder("코로나19",
+                        "https://user-images.githubusercontent.com/36880919/75559608-19505000-5a87-11ea-93f5-76517e95a048.png",
+                        LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap")
+                                .setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build())
+                        .setDescrption("코로나 19 어플 ( 플레이 스토어에서 다운로드 ) ")
+                        .build())
+                .addButton(new ButtonObject("어플다운로드", LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build()))
+
+                .build();
+
+        Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+        serverCallbackArgs.put("user_id", "${current_user_id}");
+        serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+        KakaoLinkService.getInstance().sendDefault(this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                Logger.e(errorResult.toString());
+            }
+
+            @Override
+            public void onSuccess(KakaoLinkResponse result) {
+                // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
+            }
+        });
     }
 }
