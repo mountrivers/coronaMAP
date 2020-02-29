@@ -63,6 +63,7 @@ public class HelpActivity extends AppCompatActivity {
         adapter.add("확진자 지도 : 네이버 지식백과 \n확진자 수 : 질병관리본부 홈페이지 \n뉴스 : 다음");
         adapter.add("기본 닉네임은 구글 닉네임입니다. 아래 버튼으로 수정 하세요");
         adapter.add(" PS. 아직 부족한 점이 많습니다. \n개선할점은 아래 피드백 버튼으로 건의해주세요.");
+        adapter.add(" 이 어플이 마음에 들었다면 오른쪽 아래 \n 카카오톡으로 공유 해주세요!");
 
         intoFeedBackRoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +93,12 @@ public class HelpActivity extends AppCompatActivity {
 
         FeedTemplate params = FeedTemplate
                 .newBuilder(ContentObject.newBuilder("코로나19",
-                        "https://user-images.githubusercontent.com/36880919/75559608-19505000-5a87-11ea-93f5-76517e95a048.png",
+                        "https://user-images.githubusercontent.com/36880919/75602852-53b00080-5b0c-11ea-9749-4d5e1d9cc7e8.png",
                         LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap")
                                 .setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build())
                         .setDescrption("코로나 19 어플 ( 플레이 스토어에서 다운로드 ) ")
+                        .setImageHeight(300)
+                        .setImageWidth(200)
                         .build())
                 .addButton(new ButtonObject("어플다운로드", LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build()))
 

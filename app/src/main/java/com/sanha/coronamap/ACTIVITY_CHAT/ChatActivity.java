@@ -36,6 +36,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference databaseReference = database.getReference();
     private AdView mAdView;
     public String nickName;
+    public ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +56,9 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User tuser = snapshot.getValue(User.class);
-                    Log.d("MainActivity", " na : " + tuser.getUid() + " ma : " + sender.getUid());
+                   // Log.d("MainActivity", " na : " + tuser.getUid() + " ma : " + sender.getUid());
                     if(tuser.getUid().equals(sender.getUid().toString())){
-                        Log.d("MainActivity", "★★★★★★ " + tuser.getName());
+                       // Log.d("MainActivity", "★★★★★★ " + tuser.getName());
                         nickName = tuser.getName();
                     }
                 }
@@ -84,13 +85,15 @@ public class ChatActivity extends AppCompatActivity {
                     Message message = new Message(nickName, editTextMessage.getText().toString(), sender.getUid());
                     databaseReference.child("groupchat").push().setValue(message);
                     editTextMessage.setText("");
+                    chat_view.setSelection(adapter.getCount() - 1);
                 }
+
             }
         });
     }
 
     private void showChat() {
-        final ArrayAdapter<String> adapter
+      adapter
                 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         chat_view.setAdapter(adapter);
         databaseReference.child("groupchat").addChildEventListener(new ChildEventListener() {
