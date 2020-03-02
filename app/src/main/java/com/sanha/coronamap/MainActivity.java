@@ -72,32 +72,35 @@ public class MainActivity extends FragmentActivity {
             @Override
             protected Object doInBackground(Object[] params) {
                 try {
-                    doc = Jsoup.connect("http://ncov.mohw.go.kr/index_main.jsp").get(); //naver페이지를 불러옴
+                    doc = Jsoup.connect("http://ncov.mohw.go.kr/index_main.jsp")
+                            .userAgent("Mozilla")
+                            .get(); //naver페이지를 불러옴
                     contents = doc.select("a.num");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 int cnt = 0;//숫자를 세기위한 변수
                 strNumOfPeople = "";
-                for(Element element: contents) {
-                    cnt++;
-                    if(cnt ==1){
-                        strNumOfPeople += "\n확진자수 : ";
+                if(!contents.isEmpty()) {
+                    for (Element element : contents) {
+                        cnt++;
+                        if (cnt == 1) {
+                            strNumOfPeople += "\n확진 - ";
+                        } else if (cnt == 2) {
+                            strNumOfPeople += "\n퇴원 - ";
+                        } else {
+                            strNumOfPeople += "\n사망 - ";
+                        }
+                        strNumOfPeople += element.text() + "\n";
                     }
-                    else if (cnt == 2){
-                        strNumOfPeople += "\n퇴원자수 : ";
-                    }
-                    else{
-                        strNumOfPeople += "\n사망자수 : ";
-                    }
-                    strNumOfPeople += element.text() + "\n";
                 }
                 return null;
             }
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                numOfePeople.setText(strNumOfPeople);
+                if(!strNumOfPeople.matches(""))
+                    numOfePeople.setText(strNumOfPeople);
             }
         }.execute();
     }

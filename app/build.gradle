@@ -9,8 +9,8 @@ android {
         applicationId 'com.sanha.coronamap'
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 10
-        versionName "4.01"
+        versionCode 11
+        versionName "4.02"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
