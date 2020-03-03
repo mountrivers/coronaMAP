@@ -51,7 +51,9 @@ public class MainNewsFragment extends Fragment {
             @Override
             protected Object doInBackground(Object[] params) {
                 try {
-                    doc = Jsoup.connect("https://media.daum.net/issue/5008621").get(); //naver페이지를 불러옴
+                    doc = Jsoup.connect("https://media.daum.net/issue/5008621")
+                            .userAgent("Mozilla")
+                            .get(); //naver페이지를 불러옴
                     contents = doc.select("a.link_txt");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
 
                 } catch (IOException e) {

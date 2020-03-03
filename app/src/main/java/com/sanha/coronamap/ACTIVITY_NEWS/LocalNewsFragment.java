@@ -117,7 +117,9 @@ public class LocalNewsFragment extends Fragment {
                     String middle = m;
                     String textaft = "%20코로나&sd=&ed=&period=&DA=23A" ;
 
-                    doc = Jsoup.connect(txtbef + middle + textaft).get(); //naver페이지를 불러옴
+                    doc = Jsoup.connect(txtbef + middle + textaft)
+                            .userAgent("Mozilla")
+                            .get(); //naver페이지를 불러옴
                     contents = doc.select("a.info_item");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
 
 
