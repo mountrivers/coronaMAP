@@ -46,7 +46,8 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".ACTIVITY_MAP.MapActivity" />
-        <activity android:name=".ACTIVITY_NEWS.NewsRoomActivity" />
+        <activity android:name=".ACTIVITY_NEWS.NewsRoomActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
 
     </application>
