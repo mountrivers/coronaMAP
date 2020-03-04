@@ -27,10 +27,13 @@ public class ChangeNickNameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+    private void setView(){
         setContentView(R.layout.activity_change_nick_name);
         nickName = (EditText)findViewById(R.id.changenick_text);
         sendButton = (Button) findViewById(R.id.changenick_button);
-
+    }
+    private void setButton(){
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
