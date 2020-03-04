@@ -20,20 +20,19 @@ public class NewsRoomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_newsroom);
-        IDManger.SetBannerAd(this,findViewById(R.id.newsroom_adview));
-        //fragment 객체
-        localNewsFragment = (LocalNewsFragment) getSupportFragmentManager().findFragmentById(R.id.localNewsFragment);
-         mainNewsFragment = new MainNewsFragment();
-        buttonSet();
+        setView();
+        setButton();
     }
 
-    //fragment 교체
-
-    public void buttonSet(){
+    private void setView(){
+        setContentView(R.layout.activity_newsroom);
+        IDManger.SetBannerAd(this,findViewById(R.id.newsroom_adview));
+        localNewsFragment = (LocalNewsFragment) getSupportFragmentManager().findFragmentById(R.id.localNewsFragment);
+        mainNewsFragment = new MainNewsFragment();
+    }
+    private void setButton(){
         mainNewsButton = (Button)findViewById(R.id.newsroom_mainnews_button);
         localNewsButton = (Button) findViewById(R.id.newsroom_localnews_button);
-
         mainNewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
