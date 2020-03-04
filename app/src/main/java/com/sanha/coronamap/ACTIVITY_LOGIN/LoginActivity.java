@@ -28,14 +28,25 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        mSignInButton = (SignInButton) findViewById(R.id.google_sign_in_btn);
+        setView();
+        setButton();
+        checkLogined();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        gl.handlingOnActivityResult(requestCode, resultCode, data);
+        //받아온 인텐트 결과를 바탕으로 마무리 작업을 하는 메소드.
+    }
+
+    private void setView(){
+        setContentView(R.layout.activity_login);
+
+        mSignInButton = (SignInButton) findViewById(R.id.google_sign_in_btn);
+    }
+    private void setButton(){
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,12 +59,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        gl.handlingOnActivityResult(requestCode, resultCode, data);
-        //받아온 인텐트 결과를 바탕으로 마무리 작업을 하는 메소드.
+    private void checkLogined(){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
-
 }
