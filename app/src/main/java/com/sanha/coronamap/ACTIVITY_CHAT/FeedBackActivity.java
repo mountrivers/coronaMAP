@@ -29,14 +29,19 @@ public class FeedBackActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setView();
+        setButton();
+
+    }
+    private void setView(){
         setContentView(R.layout.activity_feed_back);
-
         IDManger.SetBannerAd(this,findViewById(R.id.feedback_adview));
-
         FeedText = (EditText)findViewById(R.id.feed_send_text);
         FeedButton = (Button)findViewById(R.id.feed_send_button);
         sender = FirebaseAuth.getInstance().getCurrentUser();
-
+    }
+    private void setButton(){
         FeedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,8 +57,6 @@ public class FeedBackActivity extends AppCompatActivity {
                 });
                 alert.setMessage("개발자에게 메시지를 보냈습니다.");
                 alert.show();
-
-
             }
         });
     }
