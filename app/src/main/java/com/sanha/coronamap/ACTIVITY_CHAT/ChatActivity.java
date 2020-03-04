@@ -41,42 +41,25 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
 
-        IDManger.SetBannerAd(this,findViewById(R.id.chat_adview));
-
-        chat_view = (ListView) findViewById(R.id.chat_view);
-        buttonSend = (Button) findViewById(R.id.buttonSend);
-        editTextMessage = (EditText) findViewById(R.id.editTextMessage);
-        sender = FirebaseAuth.getInstance().getCurrentUser();
-
-        nickName = sender.getDisplayName();
-        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User tuser = snapshot.getValue(User.class);
-                   // Log.d("MainActivity", " na : " + tuser.getUid() + " ma : " + sender.getUid());
-                    if(tuser.getUid().equals(sender.getUid().toString())){
-                       // Log.d("MainActivity", "★★★★★★ " + tuser.getName());
-                        nickName = tuser.getName();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        setView();
+        setButton();
+        loadNickName();
         showChat();
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void setView(){
+        setContentView(R.layout.activity_chat);
+        IDManger.SetBannerAd(this,findViewById(R.id.chat_adview));
+        chat_view = (ListView) findViewById(R.id.chat_view);
+        buttonSend = (Button) findViewById(R.id.buttonSend);
+        editTextMessage = (EditText) findViewById(R.id.editTextMessage);
+        sender = FirebaseAuth.getInstance().getCurrentUser();
+        nickName = sender.getDisplayName();
+
+    }
+    private void setButton(){
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,10 +74,25 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+    private void loadNickName(){
+        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User tuser = snapshot.getValue(User.class);
+                    if(tuser.getUid().equals(sender.getUid().toString())){
+                        nickName = tuser.getName();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
     private void showChat() {
-      adapter
-                = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
+      adapter  = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         chat_view.setAdapter(adapter);
         databaseReference.child("groupchat").addChildEventListener(new ChildEventListener() {
             @Override
