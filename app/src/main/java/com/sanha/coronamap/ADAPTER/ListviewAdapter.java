@@ -13,21 +13,15 @@ import com.sanha.coronamap.R;
 import java.util.ArrayList;
 
 public class ListviewAdapter extends BaseAdapter {
-    // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     public ArrayList<News> listViewItemList = new ArrayList<News>() ;
 
-    // ListViewAdapter의 생성자
-    public ListviewAdapter() {
+    public ListviewAdapter() {}
 
-    }
-
-    // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
         return listViewItemList.size() ;
     }
 
-    // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final int pos = position;
@@ -51,31 +45,28 @@ public class ListviewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
         return position ;
     }
 
-    // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
     public Object getItem(int position) {
         return listViewItemList.get(position) ;
     }
 
-    // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
     public void addItem(String title, String desc, String ndata) {
         News item = new News();
-
         item.setNewsContent(title);
         item.setNewsLink(desc);
         item.setNewsDate(ndata);
         listViewItemList.add(item);
-
     }
+
     public void noti(){
         notifyDataSetChanged();
     }
+    
     public void deleteAll(){
         listViewItemList.clear();
     }
