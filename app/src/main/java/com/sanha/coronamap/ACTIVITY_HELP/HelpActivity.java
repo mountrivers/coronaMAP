@@ -36,6 +36,7 @@ public class HelpActivity extends AppCompatActivity {
     private Button intoFeedBackRoom;
     private Button intoChangeNickRoom;
     private Button sharekakaoButton;
+    private  ArrayAdapter<String> adapter;
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1;
     private InterstitialAd mInterstitialAd;
@@ -43,18 +44,22 @@ public class HelpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setView();
+        setAdapter();
+        setButton();
+    }
+
+    private void setView(){
 
         setContentView(R.layout.activity_help);
-
         IDManger.SetBannerAd(this,findViewById(R.id.help_adview));
-
         mInterstitialAd = IDManger.SetPopUpAd(this);
-
-
         help_list = (ListView)findViewById(R.id.help_view);
         intoFeedBackRoom = (Button) findViewById(R.id.main_feedback_button);
         intoChangeNickRoom = (Button) findViewById(R.id.help_change_nicname);
         sharekakaoButton = (Button) findViewById(R.id.help_sharekakao_button);
+    }
+    private void setAdapter(){
         final ArrayAdapter<String> adapter
                 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         help_list.setAdapter(adapter);
@@ -64,7 +69,8 @@ public class HelpActivity extends AppCompatActivity {
         adapter.add("기본 닉네임은 구글 닉네임입니다. 아래 버튼으로 수정 하세요");
         adapter.add(" PS. 아직 부족한 점이 많습니다. \n개선할점은 아래 피드백 버튼으로 건의해주세요.");
         adapter.add(" 이 어플이 마음에 들었다면 오른쪽 아래 \n 카카오톡으로 공유 해주세요!");
-
+    }
+    private void setButton(){
         intoFeedBackRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +94,6 @@ public class HelpActivity extends AppCompatActivity {
             }
         });
     }
-
     public void shareKakao(){
 
         FeedTemplate params = FeedTemplate
