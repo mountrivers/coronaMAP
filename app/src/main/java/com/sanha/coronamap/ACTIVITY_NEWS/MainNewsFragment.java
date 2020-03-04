@@ -41,8 +41,7 @@ public class MainNewsFragment extends Fragment {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.mainnews, container, false);
         news_viewr = (ListView) rootView.findViewById(R.id.news_view);
 
-
-        showNews( );
+        setNewsAdapter( );
 
         return rootView;
     }
@@ -77,7 +76,7 @@ public class MainNewsFragment extends Fragment {
             }
         }.execute();
     }
-    private void showNews() {
+    private void setNewsAdapter() {
 
         adapter = new ListviewAdapter() ;
 
