@@ -16,15 +16,7 @@ public class NewMapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        url = "https://terms.naver.com/entry.nhn?docId=5912275&cid=43667&categoryId=43667#TABLE_OF_CONTENT5";
-        setContentView(R.layout.activity_new_map);
-        IDManger.SetBannerAd(this,findViewById(R.id.newmap_adview));
-        WebView wb = (WebView) findViewById(R.id.newmap_webview);
-        wb.getSettings().setJavaScriptEnabled(true);
-        wb.loadUrl(url);
-        wb.setWebChromeClient(new WebChromeClient());
-        wb.setWebViewClient(new WebViewClientClass());
-
+        setView();
     }
     private class WebViewClientClass extends WebViewClient {
         @Override
@@ -33,4 +25,15 @@ public class NewMapActivity extends AppCompatActivity {
             return true;
         }
     }
+    private void setView(){
+        setContentView(R.layout.activity_new_map);
+        IDManger.SetBannerAd(this,findViewById(R.id.newmap_adview));
+        WebView wb = (WebView) findViewById(R.id.newmap_webview);
+        wb.getSettings().setJavaScriptEnabled(true);
+        url = "https://terms.naver.com/entry.nhn?docId=5912275&cid=43667&categoryId=43667#TABLE_OF_CONTENT5";
+        wb.loadUrl(url);
+        wb.setWebChromeClient(new WebChromeClient());
+        wb.setWebViewClient(new WebViewClientClass());
+    }
+
 }
