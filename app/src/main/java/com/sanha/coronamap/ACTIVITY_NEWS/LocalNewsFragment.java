@@ -3,7 +3,6 @@ package com.sanha.coronamap.ACTIVITY_NEWS;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,14 +34,10 @@ public class LocalNewsFragment extends Fragment {
 
     private ListView news_viewr;
     public ListviewAdapter adapter;
-    Elements contents;
-    Document doc = null;
-    String news;
-    String newsUrl;
+    Elements contents; Document doc = null;
+    String news,  newsUrl;
     EditText ed;
-    Button bt;
-    public Resources r;
-
+    Button setLocaleButton;
     public SharedPreferences spPref; public SharedPreferences.Editor spEditor;
 
 
@@ -50,25 +45,27 @@ public class LocalNewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.localnews, container, false);
+        setSharePref();
+        setView(rootView);
+        setButton();
+        setNewsAdapter();
+        crawling(spPref.getString("local",""));
+        return rootView;
+    }
 
+    private void setSharePref(){
         Context context = getActivity();
         spPref = context.getSharedPreferences("spPref",MODE_PRIVATE);
         spEditor = spPref.edit();
-        r = getResources();
-
-
-
-
+    }
+    private void setView(ViewGroup rootView){
         ed = (EditText) rootView.findViewById(R.id.edittext_place);
-        bt = (Button) rootView.findViewById(R.id.renew_news);
+        setLocaleButton = (Button) rootView.findViewById(R.id.renew_news);
         news_viewr = (ListView) rootView.findViewById(R.id.news_view);
         ed.setText( spPref.getString("local",""));
-
-
-        showNews();
-
-
-        bt.setOnClickListener(new View.OnClickListener() {
+    }
+    private void setButton(){
+        setLocaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adapter.deleteAll();
@@ -77,37 +74,19 @@ public class LocalNewsFragment extends Fragment {
                 crawling(ed.getText().toString());
             }
         });
-
-        return rootView;
     }
-
-
-    private void showNews() {
-
-        // Adapter 생성
+    private void setNewsAdapter(){
         adapter = new ListviewAdapter() ;
-
-        // 리스트뷰 참조 및 Adapter달기
-
         news_viewr.setAdapter(adapter);
         news_viewr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
                 News item = (News) parent.getItemAtPosition(position) ;
-
-                String nc = item.getNewsContent() ;
                 String lk = item.getNewsLink();
-                String nd = item.getNewsDate();
-
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(lk)); startActivity(intent);
-
             }
         }) ;
-        crawling(spPref.getString("local",""));
-
     }
-
     private void crawling(final String m){
         new AsyncTask() {//AsyncTask객체 생성
             @Override
@@ -119,9 +98,8 @@ public class LocalNewsFragment extends Fragment {
 
                     doc = Jsoup.connect(txtbef + middle + textaft)
                             .userAgent("Mozilla")
-                            .get(); //naver페이지를 불러옴
-                    contents = doc.select("a.info_item");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
-
+                            .get();
+                    contents = doc.select("a.info_item");
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -132,7 +110,7 @@ public class LocalNewsFragment extends Fragment {
                     news = element.select("div.compo-exacttit").text();
                     newsUrl = element.attr("href");
                     adapter.addItem(news,newsUrl,"");
-                    if(cnt == 12)//10위까지 파싱하므로
+                    if(cnt == 12) // news 12개만 가져오기
                         break;
                 }
                 return null;
