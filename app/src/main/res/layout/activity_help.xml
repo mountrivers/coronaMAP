@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
-            android:text="카카오톡공유" />
+            android:text="카톡공유" />
     </LinearLayout>
 
     <Button
