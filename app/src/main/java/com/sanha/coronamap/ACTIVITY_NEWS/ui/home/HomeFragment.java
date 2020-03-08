@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.sanha.coronamap.ACTIVITY_NEWS.R;
+import com.sanha.coronamap.R;
 
 public class HomeFragment extends Fragment {
 
