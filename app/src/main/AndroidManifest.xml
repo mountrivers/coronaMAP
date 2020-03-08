@@ -13,16 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ACTIVITY_NEWS.NewsBottomFragActivity"
-            android:label="@string/title_activity_news_bottom_frag"></activity>
-        <activity android:name=".ACTIVITY_MAP.NewMapActivity" />
+        <activity android:name=".ACTIVITY_MAP.NewMapActivity"></activity>
         <activity android:name=".ACTIVITY_HELP.ChangeNickNameActivity" />
         <activity android:name=".ACTIVITY_NEWS.NewsActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2294544540507821~1853517193" />
+            android:value="ca-app-pub-2294544540507821~1853517193"
+            />
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
@@ -42,16 +40,15 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ACTIVITY_HELP.HelpActivity">
             <intent-filter>
-                <data
-                    android:host="@string/kakaolink_host"
-                    android:scheme="@string/kakao_scheme" />
+            <data android:scheme="@string/kakao_scheme"
+                android:host="@string/kakaolink_host" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".ACTIVITY_MAP.MapActivity" />
-        <activity
-            android:name=".ACTIVITY_NEWS.NewsRoomActivity"
-            android:windowSoftInputMode="adjustPan" />
-    </application>
+        <activity android:name=".ACTIVITY_NEWS.NewsRoomActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
+
+    </application>
 </manifest>

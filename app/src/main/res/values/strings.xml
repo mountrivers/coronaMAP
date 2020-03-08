@@ -1,7 +1,3 @@
 <resources>
     <string name="app_name">코로나챗</string>
-    <string name="title_activity_news_bottom_frag">NewsBottomFragActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 </resources>
