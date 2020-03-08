@@ -2,52 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#eee"
     android:orientation="vertical"
     android:padding="0dp">
 
     <!-- fragment 는 RelativeLayout 안에 있어야 한다 -->
 
-    <RelativeLayout
-        android:id="@+id/container"
+    <com.google.android.material.tabs.TabLayout
+
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="8">
-
-        <fragment
-            android:id="@+id/localNewsFragment"
-            android:name="com.sanha.coronamap.ACTIVITY_NEWS.LocalNewsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        app:layout_constraintBottom_toTopOf="@+id/containers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="#000D9F">
 
-        <Button
-            android:id="@+id/newsroom_localnews_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#B5FFEF"
-            android:text="지역뉴스보기" />
+    </com.google.android.material.tabs.TabLayout>
 
-        <Button
-            android:id="@+id/newsroom_mainnews_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FFE3E3"
-            android:text="인기뉴스보기" />
-    </LinearLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/containers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        app:layout_constraintStart_toStartOf="@+id/tabs"
+        app:layout_constraintTop_toBottomOf="@+id/tabs">
+
+    </androidx.viewpager.widget.ViewPager>
+
     <FrameLayout
         android:id="@+id/newsroom_adview"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@null"
-        />
+        android:background="@null" />
 </LinearLayout>
