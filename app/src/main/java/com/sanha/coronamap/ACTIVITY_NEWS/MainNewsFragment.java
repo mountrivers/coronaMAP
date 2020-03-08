@@ -1,5 +1,6 @@
 package com.sanha.coronamap.ACTIVITY_NEWS;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,6 +33,13 @@ public class MainNewsFragment extends Fragment {
     Document doc = null;
     String news;
     String newsUrl;
+
+    public MainNewsFragment(Context mContext) {
+    }
+
+    public MainNewsFragment() {
+
+    }
 
 
     @Nullable
