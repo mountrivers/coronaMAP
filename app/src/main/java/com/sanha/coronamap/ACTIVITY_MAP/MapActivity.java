@@ -28,6 +28,17 @@ import com.sanha.coronamap.CLASS.MarkerData;
 import com.sanha.coronamap.MODULES.IDManger;
 import com.sanha.coronamap.R;
 
+
+/*
+ 이 파일은 현재 사용 되지 않는 파일입니다.
+
+ 기존에는, 좌표,주소 입력을 통해 네이버 지도에 마크를 입력해 주는 방법을 사용 하였습니다.
+
+ 그러나, 확진자 수가 기하급수적으로 늘어남에 따라, 다 표기 할 수도 없으며, 자료 정리를 제대로 할 수 가 없어서
+
+ 파기하고 다른 지도 표현 방식으로 변경 하였습니다. 
+
+ */
 public class MapActivity extends FragmentActivity
         implements OnMapReadyCallback {
 
