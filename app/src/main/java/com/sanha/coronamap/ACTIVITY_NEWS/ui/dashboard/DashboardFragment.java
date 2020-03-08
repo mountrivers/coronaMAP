@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.sanha.coronamap.R;
+import com.sanha.coronamap.ACTIVITY_NEWS.R;
 
 public class DashboardFragment extends Fragment {
 
