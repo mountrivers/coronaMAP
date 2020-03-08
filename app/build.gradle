@@ -47,5 +47,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
