@@ -55,11 +55,11 @@
                 android:id="@+id/main_num_of_people"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_weight="7"
                 android:isScrollContainer="true"
                 android:text="확진자 로딩중\n문제가 생기면 최대한 빠르게 업데이트 하곘습니다."
                 android:textColor="@color/colorPrimary"
-                android:textSize="20sp" />
+                android:textSize="23dp" />
 
             <Button
                 android:id="@+id/help"
