@@ -44,30 +44,36 @@
             android:layout_weight="1"
             android:background="@drawable/news3" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/fui_bgGitHub"
-            android:orientation="vertical">
+            android:background="@color/fui_bgGitHub">
 
             <TextView
                 android:id="@+id/main_num_of_people"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="7"
                 android:isScrollContainer="true"
                 android:text="확진자 로딩중\n문제가 생기면 최대한 빠르게 업데이트 하곘습니다."
-                android:textColor="@color/colorPrimary"
-                android:textSize="23dp" />
+                android:textColor="#FFE7DB"
+                android:textSize="23dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/help"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/que" />
-        </LinearLayout>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/ic_help_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
