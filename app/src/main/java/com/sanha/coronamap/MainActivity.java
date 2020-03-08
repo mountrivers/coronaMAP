@@ -20,6 +20,7 @@ import com.sanha.coronamap.ACTIVITY_HELP.HelpActivity;
 import com.sanha.coronamap.ACTIVITY_MAP.MapActivity;
 import com.sanha.coronamap.ACTIVITY_MAP.NewMapActivity;
 import com.sanha.coronamap.ACTIVITY_NEWS.NewsActivity;
+import com.sanha.coronamap.ACTIVITY_NEWS.NewsBottomFragActivity;
 import com.sanha.coronamap.ACTIVITY_NEWS.NewsRoomActivity;
 import com.sanha.coronamap.MODULES.IDManger;
 
@@ -136,7 +137,8 @@ public class MainActivity extends FragmentActivity {
         intoNewsRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewsRoomActivity.class);
+                //Intent intent = new Intent(MainActivity.this, NewsRoomActivity.class);
+                Intent intent = new Intent(MainActivity.this, NewsBottomFragActivity.class);
                 startActivity(intent);
             }
         });
