@@ -46,5 +46,6 @@ dependencies {
     implementation files('libs/jsoup-1.12.2.jar')
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
