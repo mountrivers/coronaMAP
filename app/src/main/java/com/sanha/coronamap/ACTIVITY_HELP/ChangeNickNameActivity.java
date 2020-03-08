@@ -27,6 +27,8 @@ public class ChangeNickNameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setView();
+        setButton();
     }
     private void setView(){
         setContentView(R.layout.activity_change_nick_name);
