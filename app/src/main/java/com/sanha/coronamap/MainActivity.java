@@ -85,11 +85,11 @@ public class MainActivity extends FragmentActivity {
                     for (Element element : contents) {
                         cnt++;
                         if (cnt == 1) {
-                            strNumOfPeople += "\n확진 - ";
+                            strNumOfPeople += "\n 확진 - ";
                         } else if (cnt == 2) {
-                            strNumOfPeople += "\n퇴원 - ";
+                            strNumOfPeople += "\n 퇴원 - ";
                         } else {
-                            strNumOfPeople += "\n사망 - ";
+                            strNumOfPeople += "\n 사망 - ";
                         }
                         strNumOfPeople += element.text() + "\n";
                     }
