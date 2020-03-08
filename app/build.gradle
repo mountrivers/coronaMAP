@@ -9,11 +9,12 @@ android {
         applicationId 'com.sanha.coronamap'
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 12
-        versionName "4.03"
+        versionCode 13
+        versionName "4.04"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    // 출시전 광고 제대로 박혔는지 확인 필수.
     buildTypes {
         release {
             minifyEnabled false
