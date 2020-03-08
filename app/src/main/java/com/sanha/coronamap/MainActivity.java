@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity {
                     doc = Jsoup.connect("http://ncov.mohw.go.kr/index_main.jsp")
                             .userAgent("Mozilla")
                             .get(); //naver페이지를 불러옴
-                    contents = doc.select("a.num");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
+                    contents = doc.select("div.livenum").select("li");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -84,14 +84,22 @@ public class MainActivity extends FragmentActivity {
                 if(!contents.isEmpty()) {
                     for (Element element : contents) {
                         cnt++;
-                        if (cnt == 1) {
-                            strNumOfPeople += "\n 확진 - ";
-                        } else if (cnt == 2) {
-                            strNumOfPeople += "\n 퇴원 - ";
-                        } else {
-                            strNumOfPeople += "\n 사망 - ";
+                        switch(cnt){
+                            case 1:
+                                strNumOfPeople += "\n 확진 - ";
+                                break;
+                            case 2:
+                                strNumOfPeople += "\n 완치 - ";
+                                break;
+                            case 3:
+                                strNumOfPeople += "\n 격리 - ";
+                                break;
+                            case 4:
+                                strNumOfPeople += "\n 사망 - ";
+                                break;
                         }
-                        strNumOfPeople += element.text() + "\n";
+                        strNumOfPeople += element.select("span.num").text().replace("(누적)","")
+                                + "\n           " + element.select("span.before").text().replace("전일대비 ","");
                     }
                 }
                 return null;
