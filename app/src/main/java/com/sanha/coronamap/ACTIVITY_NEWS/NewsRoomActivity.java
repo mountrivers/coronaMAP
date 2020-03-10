@@ -1,8 +1,6 @@
 package com.sanha.coronamap.ACTIVITY_NEWS;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,17 +26,61 @@ public class NewsRoomActivity extends AppCompatActivity {
 
     // -> test viewpager
     private ViewPager mViewPager;
-    SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
+    NewsPageAdapter adapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setView();
-        //setButton();
-        testSetView();
+
+        setView();
     }
-    /*
+
+    private void setView(){
+        setContentView(R.layout.activity_newsroom);
+        mViewPager = (ViewPager) findViewById(R.id.containers);
+        newsViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+        IDManger.SetBannerAd(this,findViewById(R.id.newsroom_adview));
+    }
+    public void newsViewPager(ViewPager viewPager) {
+        adapter = new NewsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new LocalNewsFragment(), "지역별 최신뉴스");
+        adapter.addFragment(new MainNewsFragment(), "코로나 화재 이슈");
+
+        viewPager.setAdapter(adapter);
+    }
+    public class NewsPageAdapter extends FragmentPagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public void addFragment(Fragment fragment, String title){
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+        public NewsPageAdapter(FragmentManager fm){
+            super(fm);
+        }
+        @Override
+        public Fragment getItem(int position) { return mFragmentList.get(position); }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size() ;
+        }
+
+    }
+}
+
+
+
+ /* 스와이프 가능한 뷰 페이저 사용하기 위해 바꿈. 기존엔 그냥 프래그먼트
     private void setView(){
         setContentView(R.layout.activity_newsroom);
         IDManger.SetBannerAd(this,findViewById(R.id.newsroom_adview));
@@ -69,44 +111,3 @@ public class NewsRoomActivity extends AppCompatActivity {
         });
     }*/
 
-    private void testSetView(){
-        setContentView(R.layout.activity_newsroom);
-        mViewPager = (ViewPager) findViewById(R.id.containers);
-        setupViewPager(mViewPager);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        IDManger.SetBannerAd(this,findViewById(R.id.newsroom_adview));
-    }
-    public void setupViewPager(ViewPager viewPager) {
-        adapter.addFragment(new LocalNewsFragment(), "지역별 최신뉴스");
-        adapter.addFragment(new MainNewsFragment(), "코로나 화재 이슈");
-
-        viewPager.setAdapter(adapter);
-    }
-    public class SectionPageAdapter extends FragmentPagerAdapter {
-
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public void addFragment(Fragment fragment, String title){
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-        public SectionPageAdapter(FragmentManager fm){
-            super(fm);
-        }
-        @Override
-        public Fragment getItem(int position) { return mFragmentList.get(position); }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size() ;
-        }
-
-
-    }
-}
