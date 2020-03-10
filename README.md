@@ -1,9 +1,8 @@
 # coronaMAP
 
-아래 3단계만 거치시면 바로 사용 가능 합니다. 
+# 사용방법
 
-
-# 1. IDManger 추가하기
+## 1. IDManger 추가하기
 
 MODULES 폴더 안에 IDManger.java 추가
 
@@ -69,7 +68,7 @@ public class IDManger {
 필요 없을시 관련 함수들 전부 삭제
 
 
-# 2. 매니페스트 수정
+## 2. 매니페스트 수정
 AndroidManifest.xml <- 
 ```
 <meta-data
@@ -78,9 +77,26 @@ android:value="ca-app-pub-2294544540507821~1853517193" />
    ```         
             삭제 혹은 value 부분을 자신의 앱ID로 변경
 
-# 3. FIREBASE JSON 파일 삽입
+## 3. FIREBASE JSON 파일 삽입
 FIREBASE 홈페이지 참고
 
 https://firebase.google.com/docs/android/setup?authuser=0
 
 
+# About App
+## 개발자
+이산하(tksgk77@gmail.com) / 박희상 (show7159@gmail.com)
+
+## 개발기간 
+2020.02.08 ~ 마켓 업데이트중
+
+## 플레이 스토어 링크
+https://play.google.com/store/apps/details?id=com.sanha.coronamap
+
+## 개발 동기/ 목적 
+코로나19의 발병으로 인해 많은 사람들이 불안해 하는 가운데, 빠르게 정보를 전달 하기 위해. 
+
+## 레거시 액티비티
+![Screenshot_20200207-165135](https://user-images.githubusercontent.com/36880919/76296499-9090aa00-62f9-11ea-945e-bd3f8ea80f67.png)
+ - 이유) 확진자 수가 기하 급수적으로 늘어나며, 일일이 확진자 이동 경로를 찍는데 어려움이 생김. 
+ 
