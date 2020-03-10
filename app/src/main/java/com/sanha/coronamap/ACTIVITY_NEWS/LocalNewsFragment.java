@@ -36,7 +36,7 @@ public class LocalNewsFragment extends Fragment {
     public ListviewAdapter adapter;
     Elements contents; Document doc = null;
     String news,  newsUrl;
-    EditText ed;
+    EditText localNameEditText;
     Button setLocaleButton;
     public SharedPreferences spPref; public SharedPreferences.Editor spEditor;
 
@@ -59,19 +59,20 @@ public class LocalNewsFragment extends Fragment {
         spEditor = spPref.edit();
     }
     private void setView(ViewGroup rootView){
-        ed = (EditText) rootView.findViewById(R.id.edittext_place);
+        localNameEditText = (EditText) rootView.findViewById(R.id.edittext_place);
+        localNameEditText.setText( spPref.getString("local",""));
+
         setLocaleButton = (Button) rootView.findViewById(R.id.renew_news);
         news_viewr = (ListView) rootView.findViewById(R.id.news_view);
-        ed.setText( spPref.getString("local",""));
     }
     private void setButton(){
         setLocaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adapter.deleteAll();
-                spEditor.putString("local",ed.getText().toString());
+                spEditor.putString("local", localNameEditText.getText().toString());
                 spEditor.commit();
-                crawling(ed.getText().toString());
+                crawling(localNameEditText.getText().toString());
             }
         });
     }
@@ -87,15 +88,15 @@ public class LocalNewsFragment extends Fragment {
             }
         }) ;
     }
-    private void crawling(final String m){
+    private void crawling(final String localName){
         new AsyncTask() {//AsyncTask객체 생성
             @Override
             protected Object doInBackground(Object[] params) {
                 try {
                     String txtbef = "https://m.search.daum.net/search?w=news&q=";
-                    String middle = m;
-                    String textaft = "%20코로나&sd=&ed=&period=&DA=23A" ;
-
+                    String middle = localName;
+                    String textaft = "%20코로나&sd=&localNameEditText=&period=&DA=23A" ;
+                    // local name 을 에딧텍스트에서 받아와 local name + 코로나 19 검색의 결과를 크롤링으로 받아옴.
                     doc = Jsoup.connect(txtbef + middle + textaft)
                             .userAgent("Mozilla")
                             .get();
