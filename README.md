@@ -99,5 +99,88 @@ https://play.google.com/store/apps/details?id=com.sanha.coronamap
  - 이유) 확진자 수가 기하 급수적으로 늘어나며, 일일이 확진자 이동 경로를 찍는데 어려움이 생김. 
  
 
+ 
+### 마크 정보창(설명창) 설정 + 정보창 띄우기
+```
+    private void setMap(@NonNull NaverMap naverMap) {
+
+        // infowindow . 정보창
+        InfoWindow infoWindow = new InfoWindow();
+        infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(this) {
+            @NonNull
+            @Override
+            public CharSequence getText(@NonNull InfoWindow infoWindow) {
+                return (CharSequence)infoWindow.getMarker().getTag();
+            }
+        });
+        // 지도 빈공간 클릭시 정보창 꺼지도록
+        naverMap.setOnMapClickListener((coord, point) -> {
+            infoWindow.close();
+        });
+
+        // 마커를 클릭하면:
+        Overlay.OnClickListener listener = overlay -> {
+            Marker marker = (Marker)overlay;
+
+            if (marker.getInfoWindow() == null) {
+                // 현재 마커에 정보 창이 열려있지 않을 경우 엶
+                infoWindow.open(marker);
+            } else {
+                // 이미 현재 마커에 정보 창이 열려있을 경우 닫음
+                infoWindow.close();
+            }
+            return true;
+        };
+
+        databaseReference.child("mark").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                makeMark(dataSnapshot,naverMap,n ,listener);
+                n++;
+            }
+        });
+
+    }
+```
+### 마크 생성  
+```
+private void makeMark(DataSnapshot dataSnapshot, @NonNull NaverMap naverMap, int k, Overlay.OnClickListener listener) {
+        MarkerData tmpMark = dataSnapshot.getValue(MarkerData.class);
+
+        markData[k] = new MarkerData(tmpMark.nNum,tmpMark.detail,tmpMark.mLatitude,tmpMark.mLongitude,tmpMark.marksNum,tmpMark.happenData);
+
+        marker[k] = new Marker();
+        marker[k].setPosition(new LatLng(markData[k].mLatitude,markData[k].mLongitude));
+        String temp = markData[k].happenData +"\n" + markData[k].nNum + "번 확진자 \n" + markData[k].detail ;
+        marker[k].setTag(temp);
+        marker[k].setIcon(MarkerIcons.BLACK);
+        // color : 0xFF000000 ~ 0xFFFFFFFF. 16777 = 0x00FFFFFF / 1000. 즉, 1000명치의 색상 자동 설정.
+        marker[k].setIconTintColor(0xFFFFFFFF  - (Integer.parseInt( markData[k].nNum) *16777));
+        marker[k].setMap(naverMap);
+        marker[k].setOnClickListener(listener);
+    }
+```
+ firebase로 마크 데이터 받아 사용 
+### Corona Admin 마크 정보 전달
+```
+sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MarkerData md = new MarkerData(a.getText().toString(), b.getText().toString(),
+                        c.getText().toString(),  Double.parseDouble(d.getText().toString()),
+                        Double.parseDouble(e.getText().toString()), Integer.parseInt( f.getText().toString())
+                        );
+                databaseReference.child("mark").push().setValue(md);
+                a.setText("");
+                b.setText("");
+                c.setText("");
+                d.setText("");
+                e.setText("");
+                f.setText("");
+            }
+        });
+```
+
+
 
 -설명 계속 추가 예정-
