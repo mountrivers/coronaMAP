@@ -330,13 +330,149 @@ private void loadNickName(){
         });
     }
 ```
-채팅을 불러옴. 
+채팅을 불러옴. 새로운 메시지가 도착 할 때, 채팅 리스트뷰의 맨 아래로 시야 고침
 (사용하지 않는 리스너는 지워져있음. 본문은 소스코드 참고)
 
 현재 문제점 : 채팅이 많아짐에 따라, 로드 속도가 너무 느림. 
 예상 해결 방안 : groupchat 내부에, 날짜별로 폴더를 다시 만들어, 최근 3일 메시지만 받아오도록 처리. 
 + 현재 리스트뷰에 단순 채팅만 구현 되어있음. 앞으로 프로필, 아이디, 메시지 3개 나누어 레이아웃 설정 예정.
 
+
+## NewsRoomActivity
+### tab 페이지뷰어 생성
+```
+public class NewsPageAdapter extends FragmentPagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public void addFragment(Fragment fragment, String title){
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+        
+        public NewsPageAdapter(FragmentManager fm){super(fm);}
+        @Override
+        public Fragment getItem(int position) { return mFragmentList.get(position); }
+        @Override
+        public int getCount() {return mFragmentList.size() ;}
+
+    }
+```
+```
+private void setView(){
+        setContentView(R.layout.activity_newsroom);
+        mViewPager = (ViewPager) findViewById(R.id.containers);
+        newsViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+    }
+    public void newsViewPager(ViewPager viewPager) {
+        adapter = new NewsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new LocalNewsFragment(), "지역별 최신뉴스");
+        adapter.addFragment(new MainNewsFragment(), "코로나 화재 이슈");
+
+        viewPager.setAdapter(adapter);
+    }
+```
+뷰 페이저가 자동으로 프래그먼트 이동 기능을 만들어줌. 
+
+(스와이프 기능 포함 )
+
+## NewsFragments
+### localnews - 지역 선택
+```
+setLocaleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.deleteAll();
+                spEditor.putString("local", localNameEditText.getText().toString());
+                spEditor.commit();
+                crawling(localNameEditText.getText().toString());
+            }
+        });
+```
+edit text의 내용을 localname 으로 지정. 
+
+다음에 방문시에도, 번거롭게 한번 더 입력을 하지 않아도 되도록
+
+SharedPreferences로 지역 명 저장
+
+-(oncreate)
+```
+localNameEditText = (EditText) rootView.findViewById(R.id.edittext_place);
+localNameEditText.setText( spPref.getString("local",""));
+```
+
+### 크롤링
+```
+ private void crawling(final String localName){
+        new AsyncTask() {//AsyncTask객체 생성
+            @Override
+            protected Object doInBackground(Object[] params) {
+                try {
+                    String txtbef = "https://m.search.daum.net/search?w=news&q=";
+                    String middle = localName;
+                    String textaft = "%20코로나&sd=&localNameEditText=&period=&DA=23A" ;
+                    
+                    // local name 을 에딧텍스트에서 받아와 local name + 코로나 19 키워드로 
+                    // 다음 뉴스 검색의 결과를 크롤링으로 받아옴.
+                    
+                    doc = Jsoup.connect(txtbef + middle + textaft)
+                            .userAgent("Mozilla")
+                            .get();
+                    contents = doc.select("a.info_item");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int cnt = 0;//숫자를 세기위한 변수
+                for(Element element: contents) {
+                    cnt++;
+                    news = element.select("div.compo-exacttit").text();
+                    newsUrl = element.attr("href");
+                    adapter.addItem(news,newsUrl,"");
+                    if(cnt == 12) // news 12개만 가져오기
+                        break;
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                adapter.noti();
+            }
+        }.execute();
+    }
+```
+크롤링 결과로 news title / news url 을 받아옴. 
+
+local - 다음 뉴스 검색 결과 크롤링
+main - 다음 뉴스 '코로나 19' 이슈 카테고리 크롤링
+
+### news adapter
+```
+private void setNewsAdapter(){
+        adapter = new ListviewAdapter() ;
+        news_viewr.setAdapter(adapter);
+        news_viewr.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                News item = (News) parent.getItemAtPosition(position) ;
+                String lk = item.getNewsLink();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(lk)); startActivity(intent);
+            }
+        }) ;
+    }
+```
+ 뉴스 제목 클릭시 해당 링크로 이동하도록 변경. 
+ 
+ (차후에 새로운 액티비티 만들어서, url 을 intent로 넘겨 웹뷰로 보여 줄 예정.
+  어플 이탈율을 줄이기 위해 )
 
 
 
