@@ -181,6 +181,89 @@ sendButton.setOnClickListener(new View.OnClickListener() {
         });
 ```
 
+## MainActivity
+### 확진자 수 크롤링
+```
+private void showCountList() {
+        numOfePeople = (TextView) findViewById(R.id.main_num_of_people);
+
+        new AsyncTask() {//AsyncTask객체 생성
+            @Override
+            protected Object doInBackground(Object[] params) {
+                try {
+                    doc = Jsoup.connect("http://ncov.mohw.go.kr/index_main.jsp")
+                            .userAgent("Mozilla")
+                            .get(); 
+                    contents = doc.select("div.livenum").select("li");//셀렉터로 div태그중 class값이 livenum인 내용을 가져옴
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int cnt = 0;//숫자를 세기위한 변수 
+                strNumOfPeople = "";
+                if(!contents.isEmpty()) {
+                    for (Element element : contents) {
+                        cnt++;
+                        switch(cnt){
+                            case 1:
+                                strNumOfPeople += "\n 확진 - ";
+                                break;
+                            case 2:
+                                strNumOfPeople += "\n 완치 - ";
+                                break;
+                            case 3:
+                                strNumOfPeople += "\n 격리 - ";
+                                break;
+                            case 4:
+                                strNumOfPeople += "\n 사망 - ";
+                                break;
+                        }
+                        strNumOfPeople += element.select("span.num").text().replace("(누적)","")
+                                + "\n           " + element.select("span.before").text().replace("전일대비 ","");
+                    }
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                if(!strNumOfPeople.matches(""))
+                    numOfePeople.setText(strNumOfPeople);
+            }
+        }.execute();
+    }
+```
+
+### hashkey
+```
+private void getHashKey(){
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (packageInfo == null)
+            Log.e("KeyHash", "KeyHash:null");
+
+        for (Signature signature : packageInfo.signatures) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            } catch (NoSuchAlgorithmException e) {
+                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
+            }
+        }
+    }
+```
+ 현재 사용은 하지 않음. sha hashkey를 얻기 위해 사용. 
+
+ kakao는, 릴리즈 해시 키 또한 요구함으로, 릴리즈 해시 키를 얻기 위해 사용
+ 
+ (릴리즈로 apk 파일 만든 후, 테스트 디바이스에 넣어 추출)
+ 
+질병관리 본부 홈페이지에서 크롤링
+![Screenshot 2020-03-10 at 20 08 46](https://user-images.githubusercontent.com/36880919/76306854-fdf90680-630a-11ea-8e55-4fae7f30cfca.jpg)
 
 
 -설명 계속 추가 예정-
