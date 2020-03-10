@@ -475,5 +475,64 @@ private void setNewsAdapter(){
   어플 이탈율을 줄이기 위해 )
 
 
+## ChangeNickName
+```
+sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(nickName.getText().toString() != ""){
+                    databaseReference.child("users").child(cureentUser.getUid()).child("name").setValue(nickName.getText().toString());
+                    AlertDialog alertDialog = new AlertDialog.Builder(ChangeNickNameActivity.this).create();
+                    alertDialog.setTitle("알림");
+                    alertDialog.setMessage("닉네임이 변경 되었습니다.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
 
--설명 계속 추가 예정-
+                                    finish();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }
+        });
+```
+USER - UID - NAME 세팅
+
+## HelpActivity
+### kakaotalk share
+```
+public void shareKakao(){
+
+        FeedTemplate params = FeedTemplate
+                .newBuilder(ContentObject.newBuilder("코로나19",
+                        "https://user-images.githubusercontent.com/36880919/75602852-53b00080-5b0c-11ea-9749-4d5e1d9cc7e8.png",
+                        LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap")
+                                .setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build())
+                        .setDescrption("코로나 19 어플 ( 플레이 스토어에서 다운로드 ) ")
+                        .setImageHeight(300)
+                        .setImageWidth(200)
+                        .build())
+                .addButton(new ButtonObject("어플다운로드", LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build()))
+
+                .build();
+
+        Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+        serverCallbackArgs.put("user_id", "${current_user_id}");
+        serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+        KakaoLinkService.getInstance().sendDefault(this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                Logger.e(errorResult.toString());
+            }
+
+            @Override
+            public void onSuccess(KakaoLinkResponse result) {
+                // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
+            }
+        });
+    }
+```
+ 카카오링크 api 사용
