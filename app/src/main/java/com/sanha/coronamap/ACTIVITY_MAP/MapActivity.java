@@ -6,9 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.widget.ListView;
 
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +23,6 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sanha.coronamap.CLASS.MarkerData;
-import com.sanha.coronamap.MODULES.IDManger;
 import com.sanha.coronamap.R;
 
 
@@ -42,10 +39,8 @@ import com.sanha.coronamap.R;
 public class MapActivity extends FragmentActivity
         implements OnMapReadyCallback {
 
-    private ListView mark_view;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = database.getReference();
-    private AdView mAdView;
     int n =0 ;
     MarkerData[] markData = new MarkerData[3000];
     Marker [] marker = new Marker[3000];
@@ -56,14 +51,10 @@ public class MapActivity extends FragmentActivity
 
         setContentView(R.layout.activity_map);
 
-        IDManger.SetBannerAd(this,findViewById(R.id.map_adview));
-        IDManger.SetNaverSdkClientId(this);
-
         NaverMapOptions options = new NaverMapOptions()
                 .camera(new CameraPosition(new LatLng(37.478717, 126.668853), 8))
                 .mapType(NaverMap.MapType.Basic)
-                .compassEnabled(true)
-                ;
+                .compassEnabled(true);
 
 
         FragmentManager fm = getSupportFragmentManager();
@@ -83,7 +74,6 @@ public class MapActivity extends FragmentActivity
 
 
     private void setMap(@NonNull NaverMap naverMap) {
-
 
         // infowindow . 정보창
         InfoWindow infoWindow = new InfoWindow();
@@ -116,7 +106,7 @@ public class MapActivity extends FragmentActivity
         databaseReference.child("mark").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                mkMark(dataSnapshot,naverMap,n ,listener);
+                makeMark(dataSnapshot,naverMap,n ,listener);
                 n++;
             }
 
@@ -139,7 +129,7 @@ public class MapActivity extends FragmentActivity
 
     }
 
-    private void mkMark(DataSnapshot dataSnapshot, @NonNull NaverMap naverMap, int k, Overlay.OnClickListener listener) {
+    private void makeMark(DataSnapshot dataSnapshot, @NonNull NaverMap naverMap, int k, Overlay.OnClickListener listener) {
         MarkerData tmpMark = dataSnapshot.getValue(MarkerData.class);
 
         markData[k] = new MarkerData(tmpMark.nNum,tmpMark.detail,tmpMark.mLatitude,tmpMark.mLongitude,tmpMark.marksNum,tmpMark.happenData);
@@ -148,13 +138,11 @@ public class MapActivity extends FragmentActivity
         marker[k].setPosition(new LatLng(markData[k].mLatitude,markData[k].mLongitude));
         String temp = markData[k].happenData +"\n" + markData[k].nNum + "번 확진자 \n" + markData[k].detail ;
         marker[k].setTag(temp);
-        marker[k].setWidth(40);
-        marker[k].setHeight(70);
         marker[k].setIcon(MarkerIcons.BLACK);
-        marker[k].setIconTintColor(0xFFFFFFFF  - (Integer.parseInt( markData[k].nNum) *400000));
+        // color : 0xFF000000 ~ 0xFFFFFFFF. 16777 = 0x00FFFFFF / 1000. 즉, 1000명치의 색상 자동 설정.
+        marker[k].setIconTintColor(0xFFFFFFFF  - (Integer.parseInt( markData[k].nNum) *16777));
         marker[k].setMap(naverMap);
         marker[k].setOnClickListener(listener);
-       // adapter.add(markData[k].detail);
     }
 }
 
@@ -162,6 +150,4 @@ public class MapActivity extends FragmentActivity
 mark[0] = new Marks("1","헬레니아 와 벨리카 사이",37.5702317, 126.9834601,0,"2020-02-05");
  mark[1] = new Marks("1","바로 거기",37.5603174, 126.9635914,1,"2020-02-05");
   mark[2] = new Marks("2","바로 거기 옆에 있는 거기",37.588469, 127.034147,2,"2020-02-05");
-
-
 */
