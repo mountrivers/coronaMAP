@@ -3,7 +3,6 @@ package com.sanha.coronamap.ACTIVITY_CHAT;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -68,7 +67,6 @@ public class ChatActivity extends AppCompatActivity {
                     Message message = new Message(nickName, editTextMessage.getText().toString(), sender.getUid());
                     databaseReference.child("groupchat").push().setValue(message);
                     editTextMessage.setText("");
-                    chat_view.setSelection(adapter.getCount() - 1);
                 }
 
             }
@@ -79,9 +77,9 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User tuser = snapshot.getValue(User.class);
-                    if(tuser.getUid().equals(sender.getUid().toString())){
-                        nickName = tuser.getName();
+                    User presentUser = snapshot.getValue(User.class);
+                    if(presentUser.getUid().equals(sender.getUid().toString())){
+                        nickName = presentUser.getName();
                     }
                 }
             }
