@@ -58,13 +58,6 @@ public class MainActivity extends FragmentActivity {
         showCountList();
     }
 
-
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
     private void showCountList() {
         numOfePeople = (TextView) findViewById(R.id.main_num_of_people);
 
@@ -74,8 +67,8 @@ public class MainActivity extends FragmentActivity {
                 try {
                     doc = Jsoup.connect("http://ncov.mohw.go.kr/index_main.jsp")
                             .userAgent("Mozilla")
-                            .get(); //naver페이지를 불러옴
-                    contents = doc.select("div.livenum").select("li");//셀렉터로 span태그중 class값이 ah_k인 내용을 가져옴
+                            .get();
+                    contents = doc.select("div.livenum").select("li");//셀렉터로 div태그중 class값이 livenum인 내용을 가져옴
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
