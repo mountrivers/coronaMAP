@@ -1,6 +1,4 @@
-# coronaMAP
-
-# 사용방법
+# coronaMAP 
 
 ## 1. IDManger 추가하기
 
@@ -100,3 +98,6 @@ https://play.google.com/store/apps/details?id=com.sanha.coronamap
 ![Screenshot_20200207-165135](https://user-images.githubusercontent.com/36880919/76296499-9090aa00-62f9-11ea-945e-bd3f8ea80f67.png)
  - 이유) 확진자 수가 기하 급수적으로 늘어나며, 일일이 확진자 이동 경로를 찍는데 어려움이 생김. 
  
+
+
+-설명 계속 추가 예정-
