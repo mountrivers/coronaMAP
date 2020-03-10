@@ -142,6 +142,8 @@ https://play.google.com/store/apps/details?id=com.sanha.coronamap
 
     }
 ```
+(사용하지 않는 리스너는 지워져있음. 본문은 소스코드 참고)
+
 ### 마크 생성  
 ```
 private void makeMark(DataSnapshot dataSnapshot, @NonNull NaverMap naverMap, int k, Overlay.OnClickListener listener) {
@@ -264,6 +266,78 @@ private void getHashKey(){
  
 질병관리 본부 홈페이지에서 크롤링
 ![Screenshot 2020-03-10 at 20 08 46](https://user-images.githubusercontent.com/36880919/76306854-fdf90680-630a-11ea-8e55-4fae7f30cfca.jpg)
+
+
+## ChatActivity
+### send message
+```
+buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(!editTextMessage.getText().toString().matches("")) {
+                    Message message = new Message(nickName, editTextMessage.getText().toString(), sender.getUid());
+                    databaseReference.child("groupchat").push().setValue(message);
+                    editTextMessage.setText("");
+                    chat_view.setSelection(adapter.getCount() - 1);
+                }
+
+            }
+        });
+```
+firebase realtime database 에 메세지 객체 전달
+
+*제약*
+ - 빈 메세지 보내지 않도록, 
+ - 최대 길이 30글자 까지로 제한 (xml)
+ 
+### load nickname
+```
+private void loadNickName(){
+        FirebaseDatabase.getInstance().getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User presentUser = snapshot.getValue(User.class);
+                    if(presentUser.getUid().equals(sender.getUid().toString())){
+                        nickName = presentUser.getName();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+```
+ 닉네임 변경한 사람을 위해, 구글 이름을 받아오는것이 아닌, 
+ 
+ firebase realtime database 에서, USER 클래스에서 user id hash값을 통해 개인 이름을 받아옴. 
+ 
+### load message
+```
+ private void showChat() {
+      adapter  = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
+        chat_view.setAdapter(adapter);
+        databaseReference.child("groupchat").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Message message = dataSnapshot.getValue(Message.class);
+                adapter.add(message.Name + " : " + message.Message);
+                chat_view.setSelection(adapter.getCount() - 1);
+            }
+        });
+    }
+```
+채팅을 불러옴. 
+(사용하지 않는 리스너는 지워져있음. 본문은 소스코드 참고)
+
+현재 문제점 : 채팅이 많아짐에 따라, 로드 속도가 너무 느림. 
+예상 해결 방안 : groupchat 내부에, 날짜별로 폴더를 다시 만들어, 최근 3일 메시지만 받아오도록 처리. 
++ 현재 리스트뷰에 단순 채팅만 구현 되어있음. 앞으로 프로필, 아이디, 메시지 3개 나누어 레이아웃 설정 예정.
+
+
 
 
 -설명 계속 추가 예정-
