@@ -2,12 +2,14 @@ package com.sanha.coronamap.ACTIVITY_MAP;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -34,6 +36,7 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.util.MarkerIcons;
+import com.sanha.coronamap.ACTIVITY_HELP.ChangeNickNameActivity;
 import com.sanha.coronamap.CLASS.MarkerData;
 import com.sanha.coronamap.CLASS.MaskMark;
 import com.sanha.coronamap.MODULES.IDManger;
@@ -61,7 +64,7 @@ public class MapActivity extends FragmentActivity
     int count = 0;
     NaverMap naverMap;
     Overlay.OnClickListener listener;
-    private Button seeMaskButton;
+    private Button seeMaskButton, helpButton;
     private FusedLocationSource locationSource;
     public Double lat = 37.383980;
     public Double lng = 126.636617;
@@ -123,6 +126,23 @@ public class MapActivity extends FragmentActivity
                 }
             }
         });
+        helpButton = (Button)findViewById(R.id.map_help_button);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(MapActivity.this).create();
+                alertDialog.setTitle("안내");
+                alertDialog.setMessage("해당버전은 베타버전이라, 오작동이 있을 수 있습니다.\n 데이터는 5~10분간격으로 업데이트 되며, 갱신을 눌러 확인하시면 됩니다.\n 건강 보험심사원에서 데이터를 그대로 받아오지만, 실제와 상이할 수 있습니다.\n 초록:100개이상/ 노랑:30~99개 / 빨강 2~29개/ 회색 0~2개 ");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -146,6 +166,7 @@ public class MapActivity extends FragmentActivity
         uiSettings.setLocationButtonEnabled(true);
         uiSettings.setZoomControlEnabled(true);
         setMap();
+
     }
 
 
