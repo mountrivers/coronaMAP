@@ -333,10 +333,13 @@ private void loadNickName(){
 채팅을 불러옴. 새로운 메시지가 도착 할 때, 채팅 리스트뷰의 맨 아래로 시야 고침
 (사용하지 않는 리스너는 지워져있음. 본문은 소스코드 참고)
 
-현재 문제점 : 채팅이 많아짐에 따라, 로드 속도가 너무 느림. 
-예상 해결 방안 : groupchat 내부에, 날짜별로 폴더를 다시 만들어, 최근 3일 메시지만 받아오도록 처리. 
-+ 현재 리스트뷰에 단순 채팅만 구현 되어있음. 앞으로 프로필, 아이디, 메시지 3개 나누어 레이아웃 설정 예정.
+TODO : 채팅이 많아짐에 따라, 로드 속도가 너무 느림. 
 
+예상 해결 방안 : groupchat 내부에, 날짜별로 폴더를 다시 만들어, 최근 3일 메시지만 받아오도록 처리. 
+
+TODO : 현재 리스트뷰에 단순 채팅만 구현 되어있음. 앞으로 프로필, 아이디, 메시지 3개 나누어 레이아웃 설정 예정.
+
+TODO : 프로필 보기 기능 + 신고 기능 => 신고된 계정 확인 후 채팅 제한 기능 
 
 ## NewsRoomActivity
 ### tab 페이지뷰어 생성
@@ -471,9 +474,68 @@ private void setNewsAdapter(){
 ```
  뉴스 제목 클릭시 해당 링크로 이동하도록 변경. 
  
- (차후에 새로운 액티비티 만들어서, url 을 intent로 넘겨 웹뷰로 보여 줄 예정.
-  어플 이탈율을 줄이기 위해 )
+ TODO : 차후에 새로운 액티비티 만들어서, url 을 intent로 넘겨 웹뷰로 보여 줄 예정.
+  어플 이탈율을 줄이기 위해
 
 
+## ChangeNickName
+```
+sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(nickName.getText().toString() != ""){
+                    databaseReference.child("users").child(cureentUser.getUid()).child("name").setValue(nickName.getText().toString());
+                    AlertDialog alertDialog = new AlertDialog.Builder(ChangeNickNameActivity.this).create();
+                    alertDialog.setTitle("알림");
+                    alertDialog.setMessage("닉네임이 변경 되었습니다.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
 
--설명 계속 추가 예정-
+                                    finish();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }
+        });
+```
+USER - UID - NAME 세팅
+
+## HelpActivity
+### kakaotalk share
+```
+public void shareKakao(){
+
+        FeedTemplate params = FeedTemplate
+                .newBuilder(ContentObject.newBuilder("코로나19",
+                        "https://user-images.githubusercontent.com/36880919/75602852-53b00080-5b0c-11ea-9749-4d5e1d9cc7e8.png",
+                        LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap")
+                                .setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build())
+                        .setDescrption("코로나 19 어플 ( 플레이 스토어에서 다운로드 ) ")
+                        .setImageHeight(300)
+                        .setImageWidth(200)
+                        .build())
+                .addButton(new ButtonObject("어플다운로드", LinkObject.newBuilder().setWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").setMobileWebUrl("https://play.google.com/store/apps/details?id=com.sanha.coronamap").build()))
+
+                .build();
+
+        Map<String, String> serverCallbackArgs = new HashMap<String, String>();
+        serverCallbackArgs.put("user_id", "${current_user_id}");
+        serverCallbackArgs.put("product_id", "${shared_product_id}");
+
+        KakaoLinkService.getInstance().sendDefault(this, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                Logger.e(errorResult.toString());
+            }
+
+            @Override
+            public void onSuccess(KakaoLinkResponse result) {
+                // 템플릿 밸리데이션과 쿼터 체크가 성공적으로 끝남. 톡에서 정상적으로 보내졌는지 보장은 할 수 없다. 전송 성공 유무는 서버콜백 기능을 이용하여야 한다.
+            }
+        });
+    }
+```
+ 카카오링크 api 사용
