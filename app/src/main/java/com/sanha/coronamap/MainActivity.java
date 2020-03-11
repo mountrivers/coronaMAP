@@ -115,7 +115,8 @@ public class MainActivity extends FragmentActivity {
         intoMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewMapActivity .class);
+                //Intent intent = new Intent(MainActivity.this, NewMapActivity .class);
+                Intent intent = new Intent(MainActivity.this, MapActivity .class);
                 startActivity(intent);
             }
         });
