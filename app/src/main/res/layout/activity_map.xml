@@ -19,7 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:text="마스크보기" />
+            android:background="#BCE7F9FF"
+            android:text="갱신" />
     </FrameLayout>
 
     <FrameLayout
