@@ -25,24 +25,9 @@ import com.naver.maps.map.util.MarkerIcons;
 import com.sanha.coronamap.CLASS.MarkerData;
 import com.sanha.coronamap.R;
 
-
-/*
- 이 파일은 현재 사용 되지 않는 파일입니다.
-
- 기존에는, 좌표,주소 입력을 통해 네이버 지도에 마크를 입력해 주는 방법을 사용 하였습니다.
-
- 그러나, 확진자 수가 기하급수적으로 늘어남에 따라, 다 표기 할 수도 없으며, 자료 정리를 제대로 할 수 가 없어서
-
- 파기하고 다른 지도 표현 방식으로 변경 하였습니다. 
-
- */
 public class MapActivity extends FragmentActivity
         implements OnMapReadyCallback {
-
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = database.getReference();
     int n =0 ;
-    MarkerData[] markData = new MarkerData[3000];
     Marker [] marker = new Marker[3000];
 
     @Override
@@ -103,37 +88,9 @@ public class MapActivity extends FragmentActivity
             return true;
         };
 
-        databaseReference.child("mark").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                makeMark(dataSnapshot,naverMap,n ,listener);
-                n++;
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
     }
 
-    private void makeMark(DataSnapshot dataSnapshot, @NonNull NaverMap naverMap, int k, Overlay.OnClickListener listener) {
-        MarkerData tmpMark = dataSnapshot.getValue(MarkerData.class);
-
-        markData[k] = new MarkerData(tmpMark.nNum,tmpMark.detail,tmpMark.mLatitude,tmpMark.mLongitude,tmpMark.marksNum,tmpMark.happenData);
-
+    private void makeMark(){
         marker[k] = new Marker();
         marker[k].setPosition(new LatLng(markData[k].mLatitude,markData[k].mLongitude));
         String temp = markData[k].happenData +"\n" + markData[k].nNum + "번 확진자 \n" + markData[k].detail ;
