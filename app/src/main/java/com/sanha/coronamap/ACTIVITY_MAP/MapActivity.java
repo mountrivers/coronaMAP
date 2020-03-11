@@ -2,12 +2,20 @@ package com.sanha.coronamap.ACTIVITY_MAP;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -53,19 +61,38 @@ public class MapActivity extends FragmentActivity
     int count = 0;
     NaverMap naverMap;
     Overlay.OnClickListener listener;
+    private Button seeMaskButton;
     private FusedLocationSource locationSource;
+    public Double lat = 37.383980;
+    public Double lng = 126.636617;
+    public String lange = "5000";
+    private LocationManager locationManager;
+    Location userLocation;
+    private static final int REQUEST_CODE_LOCATION = 2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_map);
+        seeMaskButton = (Button) findViewById(R.id.map_loadmask);
         IDManger.SetBannerAd(this,findViewById(R.id.map_adview));
         IDManger.SetNaverSdkClientId(this);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+       userLocation = getMyLocation();
+        if( userLocation != null ) {
+            lat = userLocation.getLatitude();
+            lng = userLocation.getLongitude();
+        }
+
+
         NaverMapOptions options = new NaverMapOptions()
-                .camera(new CameraPosition(new LatLng(37.478717, 126.668853), 8))
+                .camera(new CameraPosition(new LatLng(lat, lng), 12))
                 .mapType(NaverMap.MapType.Basic)
-                .compassEnabled(true);
+                .compassEnabled(true)
+                .zoomControlEnabled(true)
+                ;
 
         FragmentManager fm = getSupportFragmentManager();
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
@@ -76,6 +103,22 @@ public class MapActivity extends FragmentActivity
         mapFragment.getMapAsync(this);
         locationSource =
                 new FusedLocationSource(this, 1000);
+
+        seeMaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraPosition cameraPosition = naverMap.getCameraPosition();
+                lat = cameraPosition.target.latitude;
+                lng = cameraPosition.target.longitude;
+                try {
+                    doit();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -97,6 +140,7 @@ public class MapActivity extends FragmentActivity
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setCompassEnabled(true);
         uiSettings.setLocationButtonEnabled(true);
+        uiSettings.setZoomControlEnabled(true);
         setMap();
     }
 
@@ -183,9 +227,7 @@ public class MapActivity extends FragmentActivity
         new AsyncTask() {//AsyncTask객체 생성
             @Override
             protected Object doInBackground(Object[] params) {
-                String lat = "37.383980";
-                String lng = "126.636617";
-                String lange = "5000";
+
                 String urls = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json";
                 urls += "?&lat="+lat + "&lng="+lng+ "&m="+lange+"&_returnType=json";
                 StringBuilder urlBuilder = new StringBuilder(urls); /*URL*/
@@ -231,6 +273,7 @@ public class MapActivity extends FragmentActivity
                     JSONObject response = new JSONObject(sb.toString());
 
                     JSONArray jsonArray = (JSONArray) response.get("stores");
+                    count = 0;
                     for (int i=0; i < jsonArray.length(); i++)
                     {
                         try {
@@ -275,6 +318,26 @@ public class MapActivity extends FragmentActivity
         }.execute();
 
     }
+
+        private Location getMyLocation() {
+            Location currentLocation = null;
+            // Register the listener with the Location Manager to receive location updates
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                System.out.println("////////////사용자에게 권한을 요청해야함");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_CODE_LOCATION);
+                getMyLocation(); //이건 써도되고 안써도 되지만, 전 권한 승인하면 즉시 위치값 받아오려고 썼습니다!
+            }
+            else {
+                System.out.println("////////////권한요청 안해도됨");
+
+                // 수동으로 위치 구하기
+                String locationProvider = LocationManager.GPS_PROVIDER;
+                currentLocation = locationManager.getLastKnownLocation(locationProvider);
+
+            }
+            return currentLocation;
+        }
+
 }
 
 /* 테스트용 데이터
