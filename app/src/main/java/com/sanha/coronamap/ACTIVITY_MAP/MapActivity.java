@@ -1,6 +1,7 @@
 package com.sanha.coronamap.ACTIVITY_MAP;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -12,8 +13,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,8 +61,8 @@ import java.util.Date;
 
 public class MapActivity extends FragmentActivity
         implements OnMapReadyCallback {
-    int n =0 ;
-    Marker [] marker = new Marker[3000];
+    int n = 0;
+    Marker[] marker = new Marker[3000];
     MaskMark[] maskMarks = new MaskMark[3000];
     int count = 0;
     NaverMap naverMap;
@@ -72,19 +75,21 @@ public class MapActivity extends FragmentActivity
     private LocationManager locationManager;
     Location userLocation;
     private static final int REQUEST_CODE_LOCATION = 2;
+    LocationListener locationListener;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_map);
         seeMaskButton = (Button) findViewById(R.id.map_loadmask);
-        IDManger.SetBannerAd(this,findViewById(R.id.map_adview));
+        IDManger.SetBannerAd(this, findViewById(R.id.map_adview));
         IDManger.SetNaverSdkClientId(this);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-       userLocation = getMyLocation();
-        if( userLocation != null ) {
+        settingGPS();
+        userLocation = getMyLocation();
+        if (userLocation != null) {
             lat = userLocation.getLatitude();
             lng = userLocation.getLongitude();
         }
@@ -94,11 +99,10 @@ public class MapActivity extends FragmentActivity
                 .camera(new CameraPosition(new LatLng(lat, lng), 12))
                 .mapType(NaverMap.MapType.Basic)
                 .compassEnabled(true)
-                .zoomControlEnabled(true)
-                ;
+                .zoomControlEnabled(true);
 
         FragmentManager fm = getSupportFragmentManager();
-        MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
+        MapFragment mapFragment = (MapFragment) fm.findFragmentById(R.id.map);
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance(options);
             fm.beginTransaction().add(R.id.map, mapFragment).commit();
@@ -113,9 +117,9 @@ public class MapActivity extends FragmentActivity
                 CameraPosition cameraPosition = naverMap.getCameraPosition();
                 lat = cameraPosition.target.latitude;
                 lng = cameraPosition.target.longitude;
-                for(int i =0 ; i < count; i++){
-                    if(marker[i]!=null)
-                     marker[i].setMap(null);
+                for (int i = 0; i < count; i++) {
+                    if (marker[i] != null)
+                        marker[i].setMap(null);
                 }
                 try {
                     doit();
@@ -126,7 +130,7 @@ public class MapActivity extends FragmentActivity
                 }
             }
         });
-        helpButton = (Button)findViewById(R.id.map_help_button);
+        helpButton = (Button) findViewById(R.id.map_help_button);
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,9 +148,10 @@ public class MapActivity extends FragmentActivity
             }
         });
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions, grantResults)) {
             return;
@@ -178,7 +183,7 @@ public class MapActivity extends FragmentActivity
             @NonNull
             @Override
             public CharSequence getText(@NonNull InfoWindow infoWindow) {
-                return (CharSequence)infoWindow.getMarker().getTag();
+                return (CharSequence) infoWindow.getMarker().getTag();
             }
         });
         // 지도 빈공간 클릭시 정보창 꺼지도록
@@ -188,7 +193,7 @@ public class MapActivity extends FragmentActivity
 
         // 마커를 클릭하면:
         listener = overlay -> {
-            Marker marker = (Marker)overlay;
+            Marker marker = (Marker) overlay;
 
             if (marker.getInfoWindow() == null) {
                 // 현재 마커에 정보 창이 열려있지 않을 경우 엶
@@ -208,34 +213,34 @@ public class MapActivity extends FragmentActivity
         }
     }
 
-    private void makeMark(Double lat, Double lng, String storeName,String stockTime, String UpdateTime,String remain,int i){
-        if(!stockTime.matches("null") && !UpdateTime.matches("null")){
-            stockTime = stockTime.substring(5,16);
-            UpdateTime = UpdateTime.substring(5,16);
+    private void makeMark(Double lat, Double lng, String storeName, String stockTime, String UpdateTime, String remain, int i) {
+        if (!stockTime.matches("null") && !UpdateTime.matches("null")) {
+            stockTime = stockTime.substring(5, 16);
+            UpdateTime = UpdateTime.substring(5, 16);
             marker[i] = new Marker();
-            marker[i].setPosition(new LatLng(lat,lng));
-            String temp = "가게명 : " + storeName + "\n입고시간 : " + stockTime + "\n업데이트 : "+ UpdateTime +"\n";
+            marker[i].setPosition(new LatLng(lat, lng));
+            String temp = "가게명 : " + storeName + "\n입고시간 : " + stockTime + "\n업데이트 : " + UpdateTime + "\n";
 
             //	string
             //재고 상태[100개 이상(녹색): 'plenty' / 30개 이상 100개미만(노랑색): 'some' / 2개 이상 30개 미만(빨강색): 'few' / 1개 이하(회색): 'empty']
-            switch(remain){
+            switch (remain) {
                 case "plenty":
-                    temp+="100개 이상";
+                    temp += "100개 이상";
                     marker[i].setTag(temp);
                     marker[i].setIcon(MarkerIcons.GREEN);
                     break;
                 case "some":
-                    temp+="30~99개";
+                    temp += "30~99개";
                     marker[i].setTag(temp);
                     marker[i].setIcon(MarkerIcons.YELLOW);
                     break;
                 case "few":
-                    temp+="2~29개";
+                    temp += "2~29개";
                     marker[i].setTag(temp);
                     marker[i].setIcon(MarkerIcons.RED);
                     break;
                 case "empty":
-                    temp+="0~1개";
+                    temp += "0~1개";
                     marker[i].setTag(temp);
                     marker[i].setIcon(MarkerIcons.GRAY);
                     break;
@@ -248,13 +253,14 @@ public class MapActivity extends FragmentActivity
         }
 
     }
+
     private void doit() throws IOException, JSONException {
         new AsyncTask() {//AsyncTask객체 생성
             @Override
             protected Object doInBackground(Object[] params) {
 
                 String urls = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json";
-                urls += "?&lat="+lat + "&lng="+lng+ "&m="+lange+"&_returnType=json";
+                urls += "?&lat=" + lat + "&lng=" + lng + "&m=" + lange + "&_returnType=json";
                 StringBuilder urlBuilder = new StringBuilder(urls); /*URL*/
 
                 Log.i("TM", urlBuilder.toString());
@@ -299,31 +305,30 @@ public class MapActivity extends FragmentActivity
 
                     JSONArray jsonArray = (JSONArray) response.get("stores");
                     count = 0;
-                    for (int i=0; i < jsonArray.length(); i++)
-                    {
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             // Pulling items from the array
-                            String addr= jsonObject.getString("addr");
-                            String code= jsonObject.getString("code");
-                            String created_at= jsonObject.getString("created_at");
-                            Double glat= jsonObject.getDouble("lat");
-                            Double glng= jsonObject.getDouble("lng");
+                            String addr = jsonObject.getString("addr");
+                            String code = jsonObject.getString("code");
+                            String created_at = jsonObject.getString("created_at");
+                            Double glat = jsonObject.getDouble("lat");
+                            Double glng = jsonObject.getDouble("lng");
                             String name = jsonObject.getString("name");
-                            String remain_stat= jsonObject.getString("remain_stat");
-                            String stock_at= jsonObject.getString("stock_at");
-                            String type= jsonObject.getString("type");
+                            String remain_stat = jsonObject.getString("remain_stat");
+                            String stock_at = jsonObject.getString("stock_at");
+                            String type = jsonObject.getString("type");
 
-                            maskMarks[count] = new MaskMark(glat,glng,name,stock_at,created_at,remain_stat);
+                            maskMarks[count] = new MaskMark(glat, glng, name, stock_at, created_at, remain_stat);
                             count++;
                         } catch (JSONException e) {
 
                         }
-                    }   rd.close();
+                    }
+                    rd.close();
 
                     conn.disconnect();
-                }
-                catch (MalformedURLException e) {
+                } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -332,36 +337,62 @@ public class MapActivity extends FragmentActivity
                 }
                 return false;
             }
+
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                    for(int i = 0 ; i < count ; i++){
-                        makeMark(maskMarks[i].lat,maskMarks[i].lng,maskMarks[i].storeName,
-                                maskMarks[i].stockTime,maskMarks[i].UpdateTime,maskMarks[i].remain,i);
-                    }
+                for (int i = 0; i < count; i++) {
+                    makeMark(maskMarks[i].lat, maskMarks[i].lng, maskMarks[i].storeName,
+                            maskMarks[i].stockTime, maskMarks[i].UpdateTime, maskMarks[i].remain, i);
+                }
             }
         }.execute();
 
     }
+    private void settingGPS() {
+        // Acquire a reference to the system Location Manager
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        private Location getMyLocation() {
-            Location currentLocation = null;
-            // Register the listener with the Location Manager to receive location updates
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                System.out.println("////////////사용자에게 권한을 요청해야함");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_CODE_LOCATION);
-                getMyLocation(); //이건 써도되고 안써도 되지만, 전 권한 승인하면 즉시 위치값 받아오려고 썼습니다!
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                // TODO 위도, 경도로 하고 싶은 것
             }
-            else {
-                System.out.println("////////////권한요청 안해도됨");
 
-                // 수동으로 위치 구하기
-                String locationProvider = LocationManager.GPS_PROVIDER;
-                currentLocation = locationManager.getLastKnownLocation(locationProvider);
-
+            public void onStatusChanged(String provider, int status, Bundle extras) {
             }
-            return currentLocation;
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onProviderDisabled(String provider) {
+            }
+        };
+    }
+
+    private Location getMyLocation() {
+        Location currentLocation = null;
+        // Register the listener with the Location Manager to receive location updates
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // 사용자 권한 요청
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
         }
+        else {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+            // 수동으로 위치 구하기
+            String locationProvider = LocationManager.GPS_PROVIDER;
+            currentLocation = locationManager.getLastKnownLocation(locationProvider);
+            if (currentLocation != null) {
+                double lng = currentLocation.getLongitude();
+                double lat = currentLocation.getLatitude();
+                Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
+            }
+        }
+        return currentLocation;
+    }
 
 }
 
