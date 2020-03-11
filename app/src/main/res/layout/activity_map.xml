@@ -14,6 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="7">
 
+        <Button
+            android:id="@+id/map_loadmask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:text="마스크보기" />
     </FrameLayout>
 
     <FrameLayout
