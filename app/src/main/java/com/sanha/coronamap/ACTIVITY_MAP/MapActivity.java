@@ -65,7 +65,7 @@ public class MapActivity extends FragmentActivity
     private FusedLocationSource locationSource;
     public Double lat = 37.383980;
     public Double lng = 126.636617;
-    public String lange = "5000";
+    public String lange = "3000";
     private LocationManager locationManager;
     Location userLocation;
     private static final int REQUEST_CODE_LOCATION = 2;
@@ -110,6 +110,10 @@ public class MapActivity extends FragmentActivity
                 CameraPosition cameraPosition = naverMap.getCameraPosition();
                 lat = cameraPosition.target.latitude;
                 lng = cameraPosition.target.longitude;
+                for(int i =0 ; i < count; i++){
+                    if(marker[i]!=null)
+                     marker[i].setMap(null);
+                }
                 try {
                     doit();
                 } catch (IOException e) {
@@ -183,12 +187,12 @@ public class MapActivity extends FragmentActivity
         }
     }
 
-    private void makeMark(Double lat, Double lng, String storeName,String stockTime, String UpdateTime,String remain){
+    private void makeMark(Double lat, Double lng, String storeName,String stockTime, String UpdateTime,String remain,int i){
         if(!stockTime.matches("null") && !UpdateTime.matches("null")){
             stockTime = stockTime.substring(5,16);
             UpdateTime = UpdateTime.substring(5,16);
-            Marker marker = new Marker();
-            marker.setPosition(new LatLng(lat,lng));
+            marker[i] = new Marker();
+            marker[i].setPosition(new LatLng(lat,lng));
             String temp = "가게명 : " + storeName + "\n입고시간 : " + stockTime + "\n업데이트 : "+ UpdateTime +"\n";
 
             //	string
@@ -196,30 +200,30 @@ public class MapActivity extends FragmentActivity
             switch(remain){
                 case "plenty":
                     temp+="100개 이상";
-                    marker.setTag(temp);
-                    marker.setIcon(MarkerIcons.GREEN);
+                    marker[i].setTag(temp);
+                    marker[i].setIcon(MarkerIcons.GREEN);
                     break;
                 case "some":
                     temp+="30~99개";
-                    marker.setTag(temp);
-                    marker.setIcon(MarkerIcons.YELLOW);
+                    marker[i].setTag(temp);
+                    marker[i].setIcon(MarkerIcons.YELLOW);
                     break;
                 case "few":
                     temp+="2~29개";
-                    marker.setTag(temp);
-                    marker.setIcon(MarkerIcons.RED);
+                    marker[i].setTag(temp);
+                    marker[i].setIcon(MarkerIcons.RED);
                     break;
                 case "empty":
                     temp+="0~1개";
-                    marker.setTag(temp);
-                    marker.setIcon(MarkerIcons.GRAY);
+                    marker[i].setTag(temp);
+                    marker[i].setIcon(MarkerIcons.GRAY);
                     break;
                 default:
-                    marker.setIcon(MarkerIcons.BLACK);
+                    marker[i].setIcon(MarkerIcons.BLACK);
                     break;
             }
-            marker.setMap(naverMap);
-            marker.setOnClickListener(listener);
+            marker[i].setMap(naverMap);
+            marker[i].setOnClickListener(listener);
         }
 
     }
@@ -312,7 +316,7 @@ public class MapActivity extends FragmentActivity
                 super.onPostExecute(o);
                     for(int i = 0 ; i < count ; i++){
                         makeMark(maskMarks[i].lat,maskMarks[i].lng,maskMarks[i].storeName,
-                                maskMarks[i].stockTime,maskMarks[i].UpdateTime,maskMarks[i].remain);
+                                maskMarks[i].stockTime,maskMarks[i].UpdateTime,maskMarks[i].remain,i);
                     }
             }
         }.execute();
