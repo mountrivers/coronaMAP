@@ -34,7 +34,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends FragmentActivity {
 
-    private Button intoMapButton, intoChatRoom, intoHelpRoom, intoNewsRoom;
+    private Button intoMapButton, intoChatRoom, intoHelpRoom, intoNewsRoom, intoMaskRoom;
     private TextView numOfePeople;
 
     Elements contents;
@@ -111,11 +111,19 @@ public class MainActivity extends FragmentActivity {
         intoChatRoom = (Button)findViewById(R.id.enter_chat_room);
         intoHelpRoom = (Button)findViewById(R.id.help);
         intoNewsRoom = (Button)findViewById(R.id.intonews_button);
+        intoMaskRoom = (Button)findViewById(R.id.intoMaskButton);
 
         intoMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, NewMapActivity .class);
+                Intent intent = new Intent(MainActivity.this, NewMapActivity .class);
+
+                startActivity(intent);
+            }
+        });
+        intoMaskRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapActivity .class);
                 startActivity(intent);
             }
