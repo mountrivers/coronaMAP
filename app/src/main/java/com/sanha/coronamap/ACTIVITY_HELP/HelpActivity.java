@@ -64,8 +64,8 @@ public class HelpActivity extends AppCompatActivity {
                 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1);
         help_list.setAdapter(adapter);
         adapter.add("개발자 : 이산하(tksgk77@gmail.com) \n박희상(show7159@gmail.com)");
-        adapter.add("사용 API : 구글 Firebase / jsoup /\n카카오링크 / 네이버 API(현재 미사용)");
-        adapter.add("확진자 지도 : 네이버 지식백과 \n확진자 수 : 질병관리본부 홈페이지 \n뉴스 : 다음");
+        adapter.add("사용 API : 구글 Firebase / jsoup /\n카카오링크 / 네이버 MAP API");
+        adapter.add("확진자 지도 : 네이버 지식백과 \n확진자 수 : 질병관리본부 홈페이지 \n뉴스 : 다음 \n 마스크데이터 : 공공데이터포털 건강보험심사평가원");
         adapter.add("기본 닉네임은 구글 닉네임입니다. 아래 버튼으로 수정 하세요");
         adapter.add(" PS. 아직 부족한 점이 많습니다. \n개선할점은 아래 피드백 버튼으로 건의해주세요.");
         adapter.add(" 이 어플이 마음에 들었다면 오른쪽 아래 \n 카카오톡으로 공유 해주세요!");
