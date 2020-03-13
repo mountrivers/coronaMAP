@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sanha.coronamap.ADAPTER.ListviewAdapter;
@@ -42,7 +41,6 @@ public class NewsActivity extends AppCompatActivity {
     private ListView news_viewr;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = database.getReference();
-    private AdView mAdView;
     public ListviewAdapter adapter;
     Elements contents;
     Document doc = null;
@@ -54,7 +52,6 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_news);
-        IDManger.SetBannerAd(this,findViewById(R.id.news_adview));
         showNews( );
 
 

@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdView;
 import com.sanha.coronamap.ACTIVITY_CHAT.ChatActivity;
 import com.sanha.coronamap.ACTIVITY_HELP.HelpActivity;
 import com.sanha.coronamap.ACTIVITY_MAP.MapActivity;
@@ -41,15 +40,12 @@ public class MainActivity extends FragmentActivity {
     Document doc = null;
     String strNumOfPeople;//결과를 저장할 문자열변수
 
-    private AdView mAdView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* 광고 세팅 */
-        IDManger.SetBannerAd(this,findViewById(R.id.main_adview));
 
         /* 버튼 세팅 */
         setButton();

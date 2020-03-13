@@ -27,7 +27,6 @@ public class NewMapActivity extends AppCompatActivity {
     }
     private void setView(){
         setContentView(R.layout.activity_new_map);
-        IDManger.SetBannerAd(this,findViewById(R.id.newmap_adview));
         WebView wb = (WebView) findViewById(R.id.newmap_webview);
         wb.getSettings().setJavaScriptEnabled(true);
         url = "https://terms.naver.com/entry.nhn?docId=5912275&cid=43667&categoryId=43667#TABLE_OF_CONTENT5";

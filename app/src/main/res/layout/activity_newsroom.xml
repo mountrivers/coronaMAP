@@ -33,9 +33,4 @@
 
     </androidx.viewpager.widget.ViewPager>
 
-    <FrameLayout
-        android:id="@+id/newsroom_adview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@null" />
 </LinearLayout>

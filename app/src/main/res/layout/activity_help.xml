@@ -44,11 +44,4 @@
             android:background="@drawable/kakaotalk_icon" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/help_adview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@null"
-        />
-
 </LinearLayout>

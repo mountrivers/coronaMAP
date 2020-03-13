@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.database.ValueEventListener;
 import com.sanha.coronamap.CLASS.Message;
 import com.sanha.coronamap.CLASS.User;
@@ -33,7 +32,6 @@ public class ChatActivity extends AppCompatActivity {
     private FirebaseAuth firebaseauth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = database.getReference();
-    private AdView mAdView;
     public String nickName;
     public ArrayAdapter<String> adapter;
 
@@ -50,7 +48,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setView(){
         setContentView(R.layout.activity_chat);
-        IDManger.SetBannerAd(this,findViewById(R.id.chat_adview));
         chat_view = (ListView) findViewById(R.id.chat_view);
         buttonSend = (Button) findViewById(R.id.buttonSend);
         editTextMessage = (EditText) findViewById(R.id.editTextMessage);

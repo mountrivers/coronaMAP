@@ -92,10 +92,4 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/main_adview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@null" />
-
 </LinearLayout>

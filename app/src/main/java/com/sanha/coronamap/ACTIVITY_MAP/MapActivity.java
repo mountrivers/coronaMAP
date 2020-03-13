@@ -85,7 +85,7 @@ public class MapActivity extends FragmentActivity
 
         setContentView(R.layout.activity_map);
         seeMaskButton = (Button) findViewById(R.id.map_loadmask);
-        IDManger.SetBannerAd(this, findViewById(R.id.map_adview));
+
         IDManger.SetNaverSdkClientId(this);
         settingGPS();
         userLocation = getMyLocation();

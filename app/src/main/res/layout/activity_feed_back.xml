@@ -22,10 +22,4 @@
         android:layout_height="60dp"
         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
         android:text="전송" />
-    <FrameLayout
-        android:id="@+id/feedback_adview"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@null"
-        />
 </LinearLayout>

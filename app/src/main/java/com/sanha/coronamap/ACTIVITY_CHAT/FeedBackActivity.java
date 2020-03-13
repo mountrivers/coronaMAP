@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +24,6 @@ public class FeedBackActivity extends AppCompatActivity {
     private FirebaseUser sender;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = database.getReference();
-    private AdView mAdView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +34,6 @@ public class FeedBackActivity extends AppCompatActivity {
     }
     private void setView(){
         setContentView(R.layout.activity_feed_back);
-        IDManger.SetBannerAd(this,findViewById(R.id.feedback_adview));
         FeedText = (EditText)findViewById(R.id.feed_send_text);
         FeedButton = (Button)findViewById(R.id.feed_send_button);
         sender = FirebaseAuth.getInstance().getCurrentUser();

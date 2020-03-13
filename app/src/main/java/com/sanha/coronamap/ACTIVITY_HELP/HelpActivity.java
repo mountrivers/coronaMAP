@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.kakao.kakaolink.v2.KakaoLinkResponse;
 import com.kakao.kakaolink.v2.KakaoLinkService;
 import com.kakao.message.template.ButtonObject;
@@ -32,14 +30,12 @@ import java.util.Map;
 public class HelpActivity extends AppCompatActivity {
 
     private ListView help_list;
-    private AdView mAdView;
     private Button intoFeedBackRoom;
     private Button intoChangeNickRoom;
     private Button sharekakaoButton;
     private  ArrayAdapter<String> adapter;
 
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1;
-    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +48,6 @@ public class HelpActivity extends AppCompatActivity {
     private void setView(){
 
         setContentView(R.layout.activity_help);
-        IDManger.SetBannerAd(this,findViewById(R.id.help_adview));
-        mInterstitialAd = IDManger.SetPopUpAd(this);
         help_list = (ListView)findViewById(R.id.help_view);
         intoFeedBackRoom = (Button) findViewById(R.id.main_feedback_button);
         intoChangeNickRoom = (Button) findViewById(R.id.help_change_nicname);
@@ -81,8 +75,6 @@ public class HelpActivity extends AppCompatActivity {
         intoChangeNickRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mInterstitialAd.isLoaded())
-                    mInterstitialAd.show();
                 Intent intent = new Intent(HelpActivity.this, ChangeNickNameActivity.class);
                 startActivity(intent);
             }

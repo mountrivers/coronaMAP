@@ -18,10 +18,6 @@
         <activity android:name=".ACTIVITY_NEWS.NewsActivity" />
 
         <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2294544540507821~1853517193"
-            />
-        <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
