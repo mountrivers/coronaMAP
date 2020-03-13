@@ -43,7 +43,6 @@ public class NewsRoomActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        IDManger.SetBannerAd(this,findViewById(R.id.newsroom_adview));
     }
     public void newsViewPager(ViewPager viewPager) {
         adapter = new NewsPageAdapter(getSupportFragmentManager());
