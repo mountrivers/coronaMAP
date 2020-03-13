@@ -62,7 +62,7 @@ public class IDManger {
 }
 
 ```
-광고 ID, 네이버 ID 설정. 
+광고 ID, 네이버 ID 설정.  
 필요 없을시 관련 함수들 전부 삭제
 
 
