@@ -91,6 +91,19 @@ https://firebase.google.com/docs/android/setup?authuser=0
 ## 플레이 스토어 링크
 https://play.google.com/store/apps/details?id=com.sanha.coronamap
 
+
+## 현재 상황 
+재난 관련 어플에 광고를 달았다는 이유로 어플이 플레이 스토어에서 삭제 된 상태라
+
+정보 확인이 전혀 불가능 한 상태입니다... 
+
+업데이트 또한 불가능..
+
+수입으로 관련 기부라도 해 볼까 했는데 저번주 금요일에 갑작스런 삭제..
+
+아직 03.17 구글에 답변을 기다리고있네요...
+
+
 ## 플레이 스토어 패치 노트
 
 5.00 (2020.03.12) - 약국 마스크 잔여 수량 업데이트
