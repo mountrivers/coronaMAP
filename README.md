@@ -123,8 +123,8 @@ https://play.google.com/store/apps/details?id=com.sanha.coronamap
 ## 레거시 액티비티
 ![Screenshot_20200207-165135](https://user-images.githubusercontent.com/36880919/76296499-9090aa00-62f9-11ea-945e-bd3f8ea80f67.png)
  - 이유) 확진자 수가 기하 급수적으로 늘어나며, 일일이 확진자 이동 경로를 찍는데 어려움이 생김. 
- 
-
+  
+  *현재 MAP ACTIVITY 를 마스크 위치 알림으로 수정하여 재사용 하고 있음*
  
 ### 마크 정보창(설명창) 설정 + 정보창 띄우기
 ```
