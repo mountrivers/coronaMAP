@@ -214,6 +214,106 @@ sendButton.setOnClickListener(new View.OnClickListener() {
         });
 ```
 
+*현재는 확진자를 직접 찍어 보여주는거 대신, 공공데이터 포탈에서 마스크 잔여 수량 알려주는 지도로 바굼 *
+
+## 마스크 정보 받아오기 
+```
+private void doit() throws IOException, JSONException {
+        new AsyncTask() {//AsyncTask객체 생성
+            @Override
+            protected Object doInBackground(Object[] params) {
+                //https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json?&lat=37.383980&lng=126.636617&m=3000
+                String urls = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json";
+                urls += "?&lat=" + lat + "&lng=" + lng + "&m=" + lange + "&_returnType=json";
+                StringBuilder urlBuilder = new StringBuilder(urls); /*URL*/
+
+                Log.i("TM", urlBuilder.toString());
+
+                java.net.URL url = null;
+                try {
+                    url = new URL(urlBuilder.toString());
+
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                    conn.setRequestMethod("GET");
+
+                    conn.setRequestProperty("Content-type", "application/json");
+
+                    Log.i("Response code: ", conn.getResponseCode() + "");
+
+                    BufferedReader rd;
+
+                    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+
+                        rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                    } else {
+
+                        rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+
+                    String line;
+
+                    while ((line = rd.readLine()) != null) {
+
+                        sb.append(line);
+
+                    }
+
+
+                    JSONObject response = new JSONObject(sb.toString());
+
+                    JSONArray jsonArray = (JSONArray) response.get("stores");
+                    count = 0;
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            // Pulling items from the array
+                            String addr = jsonObject.getString("addr");
+                            String code = jsonObject.getString("code");
+                            String created_at = jsonObject.getString("created_at");
+                            Double glat = jsonObject.getDouble("lat");
+                            Double glng = jsonObject.getDouble("lng");
+                            String name = jsonObject.getString("name");
+                            String remain_stat = jsonObject.getString("remain_stat");
+                            String stock_at = jsonObject.getString("stock_at");
+                            String type = jsonObject.getString("type");
+
+                            maskMarks[count] = new MaskMark(glat, glng, name, stock_at, created_at, remain_stat);
+                            count++;
+                        } catch (JSONException e) {
+
+                        }
+                    }
+                    rd.close();
+
+                    conn.disconnect();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                for (int i = 0; i < count; i++) {
+                    makeMark(maskMarks[i].lat, maskMarks[i].lng, maskMarks[i].storeName,
+                            maskMarks[i].stockTime, maskMarks[i].UpdateTime, maskMarks[i].remain, i);
+                }
+            }
+        }.execute();
+
+    }
+ ```
 ## MainActivity
 ### 확진자 수 크롤링
 ```
