@@ -1,6 +1,7 @@
 # coronaMAP 
 
-## 1. IDManger 추가하기
+
+## How To Use 1. IDManger 추가하기
 
 MODULES 폴더 안에 IDManger.java 추가
 
@@ -66,7 +67,7 @@ public class IDManger {
 필요 없을시 관련 함수들 전부 삭제
 
 
-## 2. 매니페스트 수정
+##  How To Use 2. 매니페스트 수정
 AndroidManifest.xml <- 
 ```
 <meta-data
@@ -75,13 +76,17 @@ android:value="ca-app-pub-2294544540507821~1853517193" />
    ```         
             삭제 혹은 value 부분을 자신의 앱ID로 변경
 
-## 3. FIREBASE JSON 파일 삽입
+##  How To Use 3. FIREBASE JSON 파일 삽입
 FIREBASE 홈페이지 참고
 
 https://firebase.google.com/docs/android/setup?authuser=0
 
 
 # About App
+
+![종합](https://user-images.githubusercontent.com/36880919/77613773-e064a780-6f6e-11ea-8617-b96fcb2973d5.png)
+
+
 ## 개발자
 이산하(tksgk77@gmail.com) / 박희상 (show7159@gmail.com)
 
