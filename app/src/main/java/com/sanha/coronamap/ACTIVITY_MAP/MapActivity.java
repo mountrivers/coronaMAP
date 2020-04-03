@@ -245,6 +245,8 @@ public class MapActivity extends FragmentActivity
                     marker[i].setIcon(MarkerIcons.GRAY);
                     break;
                 default:
+                    temp+= "판매중지";
+                    marker[i].setTag(temp);
                     marker[i].setIcon(MarkerIcons.BLACK);
                     break;
             }
@@ -258,7 +260,7 @@ public class MapActivity extends FragmentActivity
         new AsyncTask() {//AsyncTask객체 생성
             @Override
             protected Object doInBackground(Object[] params) {
-
+                //https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json?&lat=37.383980&lng=126.636617&m=3000
                 String urls = "https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json";
                 urls += "?&lat=" + lat + "&lng=" + lng + "&m=" + lange + "&_returnType=json";
                 StringBuilder urlBuilder = new StringBuilder(urls); /*URL*/
